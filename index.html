@@ -3,322 +3,190 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Start – Sveriges största börsnoterade bolag</title>
-  <meta name="description" content="Startsida med 10 länkar till några av Sveriges största börsnoterade bolag, varje med representativ bild/logotyp." />
+  <title>Amelie Urban – Portfolio</title>
+  <meta name="description" content="Portfolio för Amelie Urban, Growth Marketing student på Berghs SOC. Tjänster, projekt och kontaktinformation." />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H274T89SZK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H274T89SZK');
+  </script>
+
   <style>
-    :root {
-      --bg: #0f172a;        /* slate-900 */
-      --card: #111827;      /* gray-900 */
-      --text: #e5e7eb;      /* gray-200 */
-      --muted: #94a3b8;     /* slate-400 */
-      --ring: #22d3ee;      /* cyan-400 */
-    }
-    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1200px 800px at 10% -10%, #1f2937 0%, var(--bg) 40%);
-      color: var(--text);
-      line-height: 1.5;
+      font-family: 'Arial', sans-serif;
+      background: #f9fafb;
+      color: #111827;
+    }
+    header {
+      background: #111827;
+      color: white;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    header h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #d1d5db;
     }
     nav {
-      background: #1e293b;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: #1f2937;
+      padding: 10px 20px;
     }
     nav ul {
-      display: flex;
       list-style: none;
+      display: flex;
+      justify-content: center;
       margin: 0;
       padding: 0;
-      max-width: 1100px;
-      margin: 0 auto;
     }
     nav li {
-      flex: 1;
-      text-align: center;
+      margin: 0 15px;
     }
     nav a {
-      display: block;
-      padding: 14px 0;
-      color: var(--text);
+      color: white;
       text-decoration: none;
       font-weight: 600;
     }
     nav a:hover {
-      background: rgba(255,255,255,0.05);
-      color: var(--ring);
+      color: #22d3ee;
     }
-    header {
-      max-width: 1100px;
-      margin: 40px auto 16px;
-      padding: 0 16px;
+    section {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 16px;
       text-align: center;
     }
-    h1 {
-      font-size: clamp(1.6rem, 2.4vw + 1rem, 2.5rem);
-      margin: 0 0 8px 0;
-      letter-spacing: -0.02em;
-    }
-    p.lead {
-      margin: 0 auto;
-      max-width: 70ch;
-      color: var(--muted);
-    }
-    .grid {
-      max-width: 1100px;
-      margin: 24px auto 64px;
-      padding: 0 16px 32px;
+    .services, .projects {
       display: grid;
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-      gap: 16px;
-    }
-    @media (min-width: 580px) {
-      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (min-width: 880px) {
-      .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
     }
     .card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      padding: 16px;
-      height: 100%;
-      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(34, 211, 238, 0.6);
-      box-shadow: 0 12px 36px rgba(0,0,0,0.35);
-    }
-    a.cardLink {
-      display: block;
-      height: 100%;
-      color: inherit;
-      text-decoration: none;
-      outline: none;
-    }
-    figure {
-      margin: 0;
-      display: grid;
-      grid-template-rows: 110px auto;
-      place-items: center;
-      gap: 10px;
-    }
-    img.logo {
-      max-width: 140px;
-      max-height: 90px;
-      width: auto;
-      height: auto;
-      filter: drop-shadow(0 3px 10px rgba(0,0,0,.35));
-    }
-    figcaption {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px;
       text-align: center;
-      font-weight: 600;
-      letter-spacing: .2px;
     }
-    .sub {
-      display: block;
-      margin-top: 4px;
-      font-size: .9rem;
-      font-weight: 500;
-      color: var(--muted);
-    }
-    section.contact {
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 0 16px;
-    }
-    section.contact h2 {
-      font-size: 1.6rem;
+    .card img {
+      max-width: 100%;
+      border-radius: 8px;
       margin-bottom: 12px;
     }
-    form {
-      display: grid;
-      gap: 12px;
-    }
-    input, textarea, button {
-      font-family: inherit;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: #1e293b;
-      color: var(--text);
-    }
-    textarea { resize: vertical; min-height: 100px; }
-    button {
-      background: var(--ring);
-      color: #0f172a;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    button:hover { opacity: 0.9; }
     footer {
-      max-width: 1100px;
-      margin: 0 auto 56px;
-      padding: 0 16px;
+      background: #111827;
+      color: white;
       text-align: center;
-      color: var(--muted);
-      font-size: .9rem;
+      padding: 20px;
+      margin-top: 40px;
     }
-    .socials {
-      margin-top: 16px;
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-    }
-    .socials a {
-      color: var(--text);
+    footer a {
+      color: #22d3ee;
+      margin: 0 8px;
       text-decoration: none;
-      font-weight: 600;
     }
-    .socials a:hover { color: var(--ring); }
   </style>
 </head>
 <body>
+
+  <header>
+    <h1>Amelie Urban</h1>
+    <p>Growth Marketing student at Berghs SOC</p>
+  </header>
+
   <nav>
     <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#companies">Companies</a></li>
+      <li><a href="#about">About Me</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#projects">Projects</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 
-  <header id="about">
-    <h1>Sveriges stora börsbolag – snabbstart</h1>
-    <p class="lead">Klicka på ett kort för att gå till bolagets webbplats. Varje kort visar en logotyp via bolagets domän (Clearbit Logos). Byt gärna bilder till egna filer vid behov.</p>
-  </header>
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Jag heter Amelie Urban och studerar Growth Marketing på Berghs SOC. Jag brinner för att kombinera data, kreativitet och strategi för att skapa hållbar tillväxt för företag. Här kan du läsa mer om vad jag kan erbjuda.</p>
+  </section>
 
-  <main id="companies" class="grid" aria-label="Lista med stora svenska börsbolag">
-    <!-- 1. Atlas Copco -->
-    <a class="cardLink" href="https://www.atlascopco.com" target="_blank" rel="noopener noreferrer" aria-label="Atlas Copco">
-      <article class="card">
-        <figure>
-          <img class="logo" src="https://logo.clearbit.com/atlascopco.com" alt="Atlas Copco logotyp" loading="lazy" />
-          <figcaption>Atlas Copco<span class="sub">Industrilösningar</span></figcaption>
-        </figure>
-      </article>
-    </a>
+  <section id="services">
+    <h2>Services</h2>
+    <div class="services">
+      <div class="card">
+        <img src="https://img.icons8.com/color/96/marketing.png" alt="Digital Marketing" />
+        <h3>Digital Marketing</h3>
+        <p>Sociala medier, Google Ads och kampanjoptimering.</p>
+      </div>
+      <div class="card">
+        <img src="https://img.icons8.com/color/96/combo-chart.png" alt="Data Analysis" />
+        <h3>Data & Analytics</h3>
+        <p>Insiktsdriven analys för att förstå kundresor och optimera KPI:er.</p>
+      </div>
+      <div class="card">
+        <img src="https://img.icons8.com/color/96/content.png" alt="Content Marketing" />
+        <h3>Content Marketing</h3>
+        <p>Engagerande innehåll som bygger varumärke och driver konverteringar.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- 2. Investor AB -->
-    <a class="cardLink" href="https://www.investorab.com" target="_blank" rel="noopener noreferrer" aria-label="Investor AB">
-      <article class="card">
-        <figure>
-          <img class="logo" src="https://logo.clearbit.com/investorab.com" alt="Investor AB logotyp" loading="lazy" />
-          <figcaption>Investor AB<span class="sub">Investmentbolag</span></figcaption>
-        </figure>
-      </article>
-    </a>
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="card">
+        <img src="https://source.unsplash.com/400x250/?marketing,digital" alt="Projekt 1" />
+        <h3>Case: Social Media Growth</h3>
+        <p>Skapade en kampanjstrategi som ökade engagemanget på Instagram med 40%.</p>
+      </div>
+      <div class="card">
+        <img src="https://source.unsplash.com/400x250/?analytics,data" alt="Projekt 2" />
+        <h3>Case: Data-Driven Insights</h3>
+        <p>Analyserade användardata för att förbättra konverteringsgraden i en e-handelsbutik.</p>
+      </div>
+      <div class="card">
+        <img src="https://source.unsplash.com/400x250/?content,creation" alt="Projekt 3" />
+        <h3>Case: Content Marketing</h3>
+        <p>Utvecklade innehåll för en kampanj som ökade webbtrafiken med 25%.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- 3. Ericsson -->
-    <a class="cardLink" href="https://www.ericsson.com" target="_blank" rel="noopener noreferrer" aria-label="Ericsson">
-      <article class="card">
-        <figure>
-          <img class="logo" src="https://logo.clearbit.com/ericsson.com" alt="Ericsson logotyp" loading="lazy" />
-          <figcaption>Ericsson<span class="sub">Telekom & 5G</span></figcaption>
-        </figure>
-      </article>
-    </a>
-
-    <!-- 4. Evolution AB -->
-    <a class="cardLink" href="https://www.evolution.com" target="_blank" rel="noopener noreferrer" aria-label="Evolution">
-      <article class="card">
-        <figure>
-          <img class="logo" src="https://logo.clearbit.com/evolution.com" alt="Evolution logotyp" loading="lazy" />
-          <figcaption>Evolution<span class="sub">Digitalt spelinnehåll</span></figcaption>
-        </figure>
-      </article>
-    </a>
-
-    <!-- 5. AB Volvo -->
-    <a class="cardLink" href="https://www.volvogroup.com" target="_blank" rel="noopener noreferrer" aria-label="AB Volvo">
-      <article class="card">
-        <figure>
-          <img class="logo" src="https://logo.clearbit.com/volvogroup.com" alt="AB Volvo logotyp" loading="lazy" />
-          <figcaption>AB Volvo<span class="sub">Fordon & transport</span></figcaption>
-        </figure>
-      </article>
-    </a>
-
-    <!-- 6. H&M -->
-    <a class="cardLink" href="https://www.hm.com" target="_blank" rel="noopener noreferrer" aria-label="Hennes & Mauritz (H&M)">
-      <article class="card">
-        <figure>
-          <img class="logo" src="https://logo.clearbit.com/hm.com" alt="H&M logotyp" loading="lazy" />
-          <figcaption>H&amp;M<span class="sub">Mode & detaljhandel</span></figcaption>
-        </figure>
-      </article>
-    </a>
-
-    <!-- 7. Sandvik -->
-    <a class="cardLink" href="https://www.sandvik.com" target="_blank" rel="noopener noreferrer" aria-label="Sandvik">
-      <article class="card">
-        <figure>
-          <img class="logo" src="https://logo.clearbit.com/sandvik.com" alt="Sandvik logotyp" loading="lazy" />
-          <figcaption>Sandvik<span class="sub">Industri & verktyg</span></figcaption>
-        </figure>
-      </article>
-    </a>
-
-    <!-- 8. Assa Abloy -->
-    <a class="cardLink" href="https://www.assaabloy.com" target="_blank" rel="noopener noreferrer" aria-label="Assa Abloy">
-      <article class="card">
-        <figure>
-          <img class="logo" src="https://logo.clearbit.com/assaabloy.com" alt="Assa Abloy logotyp" loading="lazy" />
-          <figcaption>ASSA ABLOY<span class="sub">Lås & säkerhet</span></figcaption>
-        </figure>
-      </article>
-    </a>
-
-    <!-- 9. Hexagon -->
-    <a class="cardLink" href="https://www.hexagon.com" target="_blank" rel="noopener noreferrer" aria-label="Hexagon">
-      <article class="card">
-        <figure>
-          <img class="logo" src="https://logo.clearbit.com/hexagon.com" alt="Hexagon logotyp" loading="lazy" />
-          <figcaption>Hexagon<span class="sub">Mjukvara & sensorer</span></figcaption>
-        </figure>
-      </article>
-    </a>
-
-    <!-- 10. Essity -->
-    <a class="cardLink" href="https://www.essity.com" target="_blank" rel="noopener noreferrer" aria-label="Essity">
-      <article class="card">
-        <figure>
-          <img class="logo" src="https://logo.clearbit.com/essity.com" alt="Essity logotyp" loading="lazy" />
-          <figcaption>Essity<span class="sub">Hygien & hälsa</span></figcaption>
-        </figure>
-      </article>
-    </a>
-  </main>
-
-  <section id="contact" class="contact">
-    <h2>Kontakt</h2>
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Vill du samarbeta eller veta mer? Fyll i formuläret nedan:</p>
     <form>
-      <label for="name">Namn</label>
-      <input type="text" id="name" name="name" required>
+      <label for="name">Namn</label><br>
+      <input type="text" id="name" name="name" required><br><br>
 
-      <label for="email">E-post</label>
-      <input type="email" id="email" name="email" required>
+      <label for="email">E-post</label><br>
+      <input type="email" id="email" name="email" required><br><br>
 
-      <label for="message">Meddelande</label>
-      <textarea id="message" name="message" required></textarea>
+      <label for="message">Meddelande</label><br>
+      <textarea id="message" name="message" rows="5" required></textarea><br><br>
 
       <button type="submit">Skicka</button>
     </form>
   </section>
 
   <footer>
+    <p>© 2025 Amelie Urban</p>
     <p>
-      Tips: Vill du byta bild till en egen fil, ersätt <code>src</code>-attributet med din lokala sökväg (t.ex. <code>images/bolag.png</code>).<br/>
-      Lägger du sidan på en server kan du även optimera bilder och lägga till en <code>favicon</code>.
-    </p>
-    <div class="socials">
-      <a href="https://facebook.com" target="_blank">Facebook</a>
-      <a href="https://twitter.com" target="_blank">Twitter</a>
-      <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+      <a href="https://linkedin.com" target="_blank">LinkedIn</a> |
       <a href="https://instagram.com" target="_blank">Instagram</a>
-    </div>
+    </p>
   </footer>
+
 </body>
 </html>
