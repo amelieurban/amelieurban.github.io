@@ -1,194 +1,192 @@
 <!doctype html>
-<html lang="sv">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Amelie Urban – Portfolio</title>
-  <meta name="description" content="Portfolio för Amelie Urban, Growth Marketing student på Berghs SOC. Tjänster, projekt och kontaktinformation." />
-
-  <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-54ZJD9CZ');</script>
-<!-- End Google Tag Manager -->
-
+  <meta name="description" content="Amelie Urban – Growth Marketing Student portfolio" />
   <style>
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      background: #f9fafb;
-      color: #111827;
+    :root{
+      --bg:#FAFAFA;          /* page background */
+      --fg:#111111;          /* main text */
+      --muted:#6B6B6B;       /* muted text */
+      --border:#E6E6E6;      /* hairline borders */
+      --card:#FFFFFF;        /* card background */
+      --shadow-1: 0 1px 0 rgba(0,0,0,0.04);
+      --shadow-2: 0 4px 24px rgba(0,0,0,0.08);
+      --maxw:1120px;
+      --radius:18px;
     }
-    header {
-      background: #111827;
-      color: white;
-      text-align: center;
-      padding: 60px 20px;
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      text-rendering:optimizeLegibility;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
-    header h1 {
-      font-size: 3rem;
-      margin: 0;
+    .container{max-width:var(--maxw); margin-inline:auto; padding:0 20px}
+
+    /* Header / Nav */
+    header{
+      position:sticky; top:0; z-index:1000;
+      backdrop-filter:saturate(180%) blur(8px);
+      background: rgba(255,255,255,0.9);
+      border-bottom:1px solid var(--border);
     }
-    header p {
-      font-size: 1.2rem;
-      margin-top: 10px;
-      color: #d1d5db;
+    nav{display:flex; align-items:center; justify-content:space-between; padding:12px 0}
+    .brand{font-weight:900; letter-spacing:0.35em; font-size:13px; text-decoration:none; color:inherit}
+    .nav{display:flex; gap:24px; list-style:none; margin:0; padding:0}
+    .nav a{font-size:13px; color:inherit; text-decoration:none}
+    .nav a:hover{opacity:.7}
+
+    /* Sections */
+    section{padding:64px 0; border-bottom:1px solid var(--border)}
+    h1{font-size:clamp(36px,5vw,56px); line-height:1.05; letter-spacing:.32em; margin:0}
+    .subtitle{margin-top:18px; letter-spacing:.38em; font-size:12px; color:var(--muted)}
+    h2{font-size:clamp(18px,2.4vw,22px); letter-spacing:.35em; font-weight:800; margin:0 0 24px}
+
+    /* Cards */
+    .grid{display:grid; gap:24px}
+    @media (min-width: 768px){
+      .grid-2{grid-template-columns:1fr 1fr}
+      .grid-3{grid-template-columns:1fr 1fr 1fr}
     }
-    nav {
-      background: #1f2937;
-      padding: 10px 20px;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      margin: 0;
-      padding: 0;
-    }
-    nav li {
-      margin: 0 15px;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    nav a:hover {
-      color: #22d3ee;
-    }
-    section {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-    .services, .projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 20px;
-      text-align: center;
-    }
-    .card img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin-bottom: 12px;
-    }
-    footer {
-      background: #111827;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-    }
-    footer a {
-      color: #22d3ee;
-      margin: 0 8px;
-      text-decoration: none;
-    }
+    .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-1)}
+    .card:hover{box-shadow:var(--shadow-2)}
+    .card h3{margin:0; font-size:16px; letter-spacing:.06em}
+    .card p{margin:8px 0 0; font-size:14px; color:#333}
+
+    /* Contact cards */
+    .kicker{font-size:11px; color:#7A7A7A; letter-spacing:.22em; text-transform:uppercase}
+
+    /* Footer */
+    footer{padding:40px 0; text-align:center; color:#8A8A8A; font-size:11px; border-top:1px solid var(--border)}
+
+    /* Utilities */
+    .mb-40{margin-bottom:40px}
+    .lead{max-width:720px}
+    a{color:inherit}
+    a.underline{ text-decoration:underline; text-underline-offset:4px }
   </style>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54ZJD9CZ"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+  <!-- Header / Navbar -->
   <header>
-    <h1>Amelie Urban</h1>
-    <p>Growth Marketing student at Berghs SOC</p>
+    <div class="container">
+      <nav aria-label="Primary">
+        <a class="brand" href="#top" aria-label="Home">AMELIE URBAN</a>
+        <ul class="nav" role="list">
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#cases">Cases</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <nav>
-    <ul>
-      <li><a href="#about">About Me</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+  <main id="top" class="container">
+    <!-- HERO / NAMEPLATE -->
+    <section>
+      <h1>A M E L I E  U R B A N</h1>
+      <p class="subtitle">G R O W T H   M A R K E T I N G   S T U D E N T</p>
+      <p class="subtitle">B E R G H S   S C H O O L   O F   C O M M U N I C A T I O N</p>
+    </section>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>Jag heter Amelie Urban och studerar Growth Marketing på Berghs SOC. Jag brinner för att kombinera data, kreativitet och strategi för att skapa hållbar tillväxt för företag. Här kan du läsa mer om vad jag kan erbjuda.</p>
-  </section>
+    <!-- ABOUT -->
+    <section id="about">
+      <h2>A B O U T</h2>
+      <p class="lead">I’m a Growth Marketing student at Berghs School of Communication with a background in Strategic Communication (B.A.). This portfolio showcases what I’m working on throughout the year and outlines my services within growth marketing.</p>
+    </section>
 
-  <section id="services">
-    <h2>Services</h2>
-    <div class="services">
-      <div class="card">
-        <img src="https://img.icons8.com/color/96/marketing.png" alt="Digital Marketing" />
-        <h3>Digital Marketing</h3>
-        <p>Sociala medier, Google Ads och kampanjoptimering.</p>
+    <!-- SERVICES -->
+    <section id="services">
+      <h2 class="mb-40">S E R V I C E S</h2>
+      <div class="grid grid-2">
+        <article class="card">
+          <h3>CRO</h3>
+          <p>Optimizing conversion</p>
+        </article>
+        <article class="card">
+          <h3>SEO &amp; SEM</h3>
+          <p>Search visibility and advertising</p>
+        </article>
+        <article class="card">
+          <h3>Google Analytics</h3>
+          <p>Website traffic performance insights</p>
+        </article>
+        <article class="card">
+          <h3>CRM &amp; Customer Loyalty</h3>
+          <p>Managing relationships, driving retention</p>
+        </article>
+        <article class="card">
+          <h3>Performance Marketing</h3>
+          <p>Data‑driven measurable advertising</p>
+        </article>
+        <article class="card">
+          <h3>Content Marketing &amp; Social Media</h3>
+          <p>Engaging audiences with storytelling</p>
+        </article>
       </div>
-      <div class="card">
-        <img src="https://img.icons8.com/color/96/combo-chart.png" alt="Data Analysis" />
-        <h3>Data & Analytics</h3>
-        <p>Insiktsdriven analys för att förstå kundresor och optimera KPI:er.</p>
-      </div>
-      <div class="card">
-        <img src="https://img.icons8.com/color/96/content.png" alt="Content Marketing" />
-        <h3>Content Marketing</h3>
-        <p>Engagerande innehåll som bygger varumärke och driver konverteringar.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="projects">
-      <div class="card">
-        <img src="https://source.unsplash.com/400x250/?marketing,digital" alt="Projekt 1" />
-        <h3>Case: Social Media Growth</h3>
-        <p>Skapade en kampanjstrategi som ökade engagemanget på Instagram med 40%.</p>
+    <!-- CASES -->
+    <section id="cases">
+      <h2 class="mb-40">C A S E S</h2>
+      <div class="grid grid-3">
+        <!-- Fotografiska -->
+        <article class="card">
+          <h3>
+            <a href="fotografiska.html" class="underline">Fotografiska</a>
+          </h3>
+          <p>A marketing campaign concept for Fotografiska. Created an idea for a pop‑up event to drive traffic to the museum and create engagement.</p>
+          <p style="margin-top:12px; font-size:14px"><a class="underline" href="fotografiska.html">Read more</a></p>
+        </article>
+        <!-- Case 1 -->
+        <article class="card">
+          <h3><a href="digital-visibility.html" class="underline">Digital Visibility Strategy</a></h3>
+          <p>Created a marketing strategy to increase visibility.</p>
+          <p style="margin-top:12px; font-size:14px"><a class="underline" href="digital-visibility.html">Read more</a></p>
+        </article>
+        <!-- Case 2 -->
+        <article class="card">
+          <h3><a href="seo-conversion.html" class="underline">SEO Conversion Boost</a></h3>
+          <p>Increased conversion by improving SEO.</p>
+          <p style="margin-top:12px; font-size:14px"><a class="underline" href="seo-conversion.html">Read more</a></p>
+        </article>
       </div>
-      <div class="card">
-        <img src="https://source.unsplash.com/400x250/?analytics,data" alt="Projekt 2" />
-        <h3>Case: Data-Driven Insights</h3>
-        <p>Analyserade användardata för att förbättra konverteringsgraden i en e-handelsbutik.</p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="border-bottom:none">
+      <h2 class="mb-40">W O R K   W I T H   M E</h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="kicker">Address</div>
+          <div>Bobergsvägen 48, 115 42 Stockholm</div>
+        </div>
+        <div class="card">
+          <div class="kicker">Email</div>
+          <div><a class="underline" href="mailto:amelie.urban@student.berghs.se">amelie.urban@student.berghs.se</a></div>
+        </div>
+        <div class="card">
+          <div class="kicker">Phone</div>
+          <div><a class="underline" href="tel:+46707170057">+46 (0) 707 170 057</a></div>
+        </div>
       </div>
-      <div class="card">
-        <img src="https://source.unsplash.com/400x250/?content,creation" alt="Projekt 3" />
-        <h3>Case: Content Marketing</h3>
-        <p>Utvecklade innehåll för en kampanj som ökade webbtrafiken med 25%.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Vill du samarbeta eller veta mer? Fyll i formuläret nedan:</p>
-    <form>
-      <label for="name">Namn</label><br>
-      <input type="text" id="name" name="name" required><br><br>
-
-      <label for="email">E-post</label><br>
-      <input type="email" id="email" name="email" required><br><br>
-
-      <label for="message">Meddelande</label><br>
-      <textarea id="message" name="message" rows="5" required></textarea><br><br>
-
-      <button type="submit">Skicka</button>
-    </form>
-  </section>
+    </section>
+  </main>
 
   <footer>
-    <p>© 2025 Amelie Urban</p>
-    <p>
-      <a href="https://linkedin.com" target="_blank">LinkedIn</a> |
-      <a href="https://instagram.com" target="_blank">Instagram</a>
-    </p>
+    © <span id="year"></span> Amelie Urban
   </footer>
 
+  <script>
+    // Set current year in footer (no frameworks needed)
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
