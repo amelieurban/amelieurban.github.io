@@ -1,32 +1,26 @@
 <!doctype html>
 <html lang="en">
 <head>
- <li>
-  <button onclick="
+  <!-- Initiera dataLayer tidigt -->
+  <script>
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'about',
-      link_text: 'About'
-    });
-    document.getElementById('about').scrollIntoView({behavior: 'smooth'});
-  ">About</button>
-</li>
-
+  </script>
 
   <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-54ZJD9CZ');</script>
-<!-- End Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-54ZJD9CZ');</script>
+  <!-- End Google Tag Manager -->
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Amelie Urban – Portfolio</title>
   <meta name="description" content="Amelie Urban – Growth Marketing Student portfolio" />
   <style>
     :root{
-      --bg:##efe9e4;          /* page background */
+      --bg:#efe9e4;          /* page background (fixat dubbelt #) */
       --fg:#ea3e3e;          /* main text */
       --muted:#f34f4f;       /* muted text */
       --border:#E6E6E6;      /* hairline borders */
@@ -58,8 +52,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     nav{display:flex; align-items:center; justify-content:space-between; padding:12px 0}
     .brand{font-weight:900; letter-spacing:0.35em; font-size:13px; text-decoration:none; color:inherit}
     .nav{display:flex; gap:24px; list-style:none; margin:0; padding:0}
-    .nav a{font-size:13px; color:inherit; text-decoration:none}
-    .nav a:hover{opacity:.7}
+    .nav button{font-size:13px; color:inherit; background:none; border:0; padding:0; cursor:pointer}
+    .nav button:hover{opacity:.7}
 
     /* Sections */
     section{padding:64px 0; border-bottom:1px solid var(--border)}
@@ -93,23 +87,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54ZJD9CZ"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54ZJD9CZ"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
   <!-- Header / Navbar -->
   <header>
     <div class="container">
       <nav aria-label="Primary">
         <a class="brand" href="#top" aria-label="Home">AMELIE URBAN</a>
-        <ul class="nav" role="list">
-<ul id="mainNav">
-  <li><button type="button" class="menu-btn" data-link="About" data-target="about">About</button></li>
-  <li><button type="button" class="menu-btn" data-link="Services" data-target="services">Services</button></li>
-  <li><button type="button" class="menu-btn" data-link="Cases" data-target="cases">Cases</button></li>
-  <li><button type="button" class="menu-btn" data-link="Contact" data-target="contact">Contact</button></li>
-</ul>
 
-
+        <!-- EN enda UL (nav) med knappar -->
+        <ul id="mainNav" class="nav" role="list">
+          <li><button type="button" class="menu-btn" data-link="About" data-target="about">About</button></li>
+          <li><button type="button" class="menu-btn" data-link="Services" data-target="services">Services</button></li>
+          <li><button type="button" class="menu-btn" data-link="Cases" data-target="cases">Cases</button></li>
+          <li><button type="button" class="menu-btn" data-link="Contact" data-target="contact">Contact</button></li>
         </ul>
       </nav>
     </div>
@@ -118,9 +111,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <main id="top" class="container">
     <!-- HERO / NAMEPLATE -->
     <section>
-      <h1>A M E L I E  U R B A N</h1>
-      <p class="subtitle">G R O W T H   M A R K E T I N G   S T U D E N T</p>
-      <p class="subtitle">B E R G H S   S C H O O L   O F   C O M M U N I C A T I O N</p>
+      <h1>A M E L I E  U R B A N</h1>
+      <p class="subtitle">G R O W T H   M A R K E T I N G   S T U D E N T</p>
+      <p class="subtitle">B E R G H S   S C H O O L   O F   C O M M U N I C A T I O N</p>
     </section>
 
     <!-- ABOUT -->
@@ -151,7 +144,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </article>
         <article class="card">
           <h3>Performance Marketing</h3>
-          <p>Data‑driven measurable advertising</p>
+          <p>Data-driven measurable advertising</p>
         </article>
         <article class="card">
           <h3>Content Marketing &amp; Social Media</h3>
@@ -169,7 +162,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <h3>
             <a href="fotografiska.html" class="underline">Fotografiska</a>
           </h3>
-          <p>A marketing campaign concept for Fotografiska. Created an idea for a pop‑up event to drive traffic to the museum and create engagement.</p>
+          <p>A marketing campaign concept for Fotografiska. Created an idea for a pop-up event to drive traffic to the museum and create engagement.</p>
           <p style="margin-top:12px; font-size:14px"><a class="underline" href="fotografiska.html">Read more</a></p>
         </article>
         <!-- Case 1 -->
@@ -189,7 +182,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- CONTACT -->
     <section id="contact" style="border-bottom:none">
-      <h2 class="mb-40">W O R K   W I T H   M E</h2>
+      <h2 class="mb-40">W O R K   W I T H   M E</h2>
       <div class="grid grid-3">
         <div class="card">
           <div class="kicker">Address</div>
@@ -211,9 +204,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     © <span id="year"></span> Amelie Urban
   </footer>
 
+  <!-- Din egen JS längst ned: tracking + smooth scroll -->
   <script>
-    // Set current year in footer (no frameworks needed)
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.querySelectorAll('#mainNav .menu-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        // Skicka event till dataLayer
+        window.dataLayer.push({
+          event: 'menu_click',
+          link_text: btn.dataset.link
+        });
+
+        // Scrolla till rätt sektion
+        var target = document.getElementById(btn.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
   </script>
 </body>
 </html>
