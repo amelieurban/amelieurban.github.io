@@ -145,7 +145,7 @@
         </article>
         <article class="card">
           <h3><a href="google-toolbox.html" class="underline">Google Toolbox</a></h3>
-          <p>Trough the Google Toolbox course, I learned the basics within GA4, Google Tag Manager, the command line, etc.</p>
+          <p>Through the Google Toolbox course, I learned the basics within GA4, Google Tag Manager, the command line, etc.</p>
           <p style="margin-top:12px; font-size:14px"><a class="underline" href="google-toolbox.html">Read more</a></p>
         </article>
         <article class="card">
@@ -162,7 +162,7 @@
       <div class="grid grid-3">
         <div class="card"><div class="kicker">Address</div><div>Bobergsvägen 48, 115 42 Stockholm</div></div>
         <div class="card"><div class="kicker">Email</div><div><a class="underline" href="mailto:amelie.urban@student.berghs.se">amelie.urban@student.berghs.se</a></div></div>
-        <div class="card"><div class="kicker">LinkedIn</div><div><a class="underline" href="https://www.linkedin.com/in/amelie-urban" target="_blank">linkedin.com/in/amelie-urban</a></div></div>
+        <div class="card"><div class="kicker">LinkedIn</div><div><a class="underline" id="linkedinLink" href="https://www.linkedin.com/in/amelie-urban" target="_blank" rel="noopener">linkedin.com/in/amelie-urban</a></div></div>
       </div>
     </section>
   </main>
@@ -175,19 +175,29 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // Nav tracking + smooth scroll (offset handled by CSS scroll-margin-top)
     document.querySelectorAll('#mainNav .menu-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        // Push to dataLayer
         window.dataLayer.push({
           event: 'menu_click',
           link_text: btn.dataset.link
         });
-
-        // Scroll into view (CSS scroll-margin ensures header offset)
         const target = document.getElementById(btn.dataset.target);
         if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
     });
+
+    // Track LinkedIn clicks
+    const ln = document.getElementById('linkedinLink');
+    if (ln) {
+      ln.addEventListener('click', function () {
+        window.dataLayer.push({
+          event: 'social_click',
+          platform: 'LinkedIn',
+          link_url: this.href
+        });
+      });
+    }
   </script>
 </body>
 </html>
