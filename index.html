@@ -1,11 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Init dataLayer early -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-  </script>
-
+ 
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -13,6 +9,17 @@
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-54ZJD9CZ');</script>
   <!-- End Google Tag Manager -->
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'page_context',
+    page_title: document.title,
+    page_path: location.pathname,
+    language: document.documentElement.lang || 'en'
+  });
+</script>
+
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -85,6 +92,25 @@
     a{color:inherit}
     a.underline{ text-decoration:underline; text-underline-offset:4px }
   </style>
+    <style>
+    .lead{max-width:720px}
+    a{color:inherit}
+    a.underline{ text-decoration:underline; text-underline-offset:4px }
+  </style>
+
+  <!-- Initiera dataLayer -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'page_context',
+      page_title: document.title,
+      page_path: location.pathname,
+      language: document.documentElement.lang || 'en'
+    });
+  </script>
+</head>
+<body>
+
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
