@@ -20,6 +20,17 @@
   });
 </script>
 
+<script>
+  // Spara original push-metoden
+  const originalPush = window.dataLayer.push;
+
+  // Ersätt med egen funktion som loggar + skickar vidare
+  window.dataLayer.push = function () {
+    console.log("📢 dataLayer push:", arguments[0]);
+    return originalPush.apply(window.dataLayer, arguments);
+  };
+</script>
+
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
