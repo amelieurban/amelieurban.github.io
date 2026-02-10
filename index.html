@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
- 
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -10,121 +9,210 @@
   })(window,document,'script','dataLayer','GTM-54ZJD9CZ');</script>
   <!-- End Google Tag Manager -->
 
-  <script>
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: 'page_context',
-    page_title: document.title,
-    page_path: location.pathname,
-    language: document.documentElement.lang || 'en'
-  });
-</script>
-
-<script>
-  // Spara original push-metoden
-  const originalPush = window.dataLayer.push;
-
-  // Ersätt med egen funktion som loggar + skickar vidare
-  window.dataLayer.push = function () {
-    console.log("📢 dataLayer push:", arguments[0]);
-    return originalPush.apply(window.dataLayer, arguments);
-  };
-</script>
-
-
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Amelie Urban – Portfolio</title>
-  <meta name="description" content="Amelie Urban – Growth Marketing Student portfolio" />
+  <title>Amelie Urban — Portfolio</title>
+  <meta name="description" content="Amelie Urban — Growth Marketer and Strategic Communicator" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      --bg:#efe9e4;
-      --fg:#ea3e3e;
-      --muted:#f34f4f;
-      --border:#E6E6E6;
-      --card:#FFFFFF;
-      --shadow-1: 0 1px 0 rgba(0,0,0,0.04);
-      --shadow-2: 0 4px 24px rgba(0,0,0,0.08);
+      --bg:#f6f2ec;
+      --bg-2:#fbf8f4;
+      --ink:#121212;
+      --muted:#5d564f;
+      --accent:#b46c49;
+      --line:#e0d8cf;
+      --card:#ffffff;
+      --shadow:0 18px 42px rgba(0,0,0,0.08);
+      --radius:22px;
       --maxw:1120px;
-      --radius:18px;
     }
+    *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      background:var(--bg);
-      color:var(--fg);
-      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Abereto, Aboreto, "Aboreto", Aboreto, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      font-family:"Source Sans 3", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color:var(--ink);
+      background:radial-gradient(1200px 900px at 10% -10%, #ffffff 0%, var(--bg) 55%, #f0eae2 100%);
       text-rendering:optimizeLegibility;
       -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
     }
-    .container{max-width:var(--maxw); margin-inline:auto; padding:0 20px}
+    .backdrop{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      background:
+        radial-gradient(700px 500px at 85% 0%, rgba(180,108,73,0.12) 0%, rgba(180,108,73,0) 70%),
+        radial-gradient(900px 700px at 0% 80%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 65%);
+    }
+    a{color:inherit}
+    .page{max-width:var(--maxw); margin-inline:auto; padding:0 24px}
 
-    /* Header / Nav */
     header{
-      position:sticky; top:0; z-index:1000;
-      backdrop-filter:saturate(180%) blur(8px);
-      background: rgba(255,255,255,0.9);
-      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(246,242,236,0.82);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
     }
-    nav{display:flex; align-items:center; justify-content:space-between; padding:12px 0}
-    .brand{font-weight:900; letter-spacing:0.35em; font-size:13px; text-decoration:none; color:inherit}
-    .nav{display:flex; gap:24px; list-style:none; margin:0; padding:0}
-    .nav button{font-size:13px; color:inherit; background:none; border:0; padding:0; cursor:pointer}
-    .nav button:hover{opacity:.7}
+    nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      padding:18px 0;
+      flex-wrap:wrap;
+    }
+    .brand{
+      font-family:"Playfair Display", "Times New Roman", Times, serif;
+      font-size:18px;
+      letter-spacing:0.14em;
+      text-decoration:none;
+      text-transform:uppercase;
+    }
+    .menu{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:flex;
+      gap:28px;
+      text-transform:uppercase;
+      letter-spacing:0.25em;
+      font-size:12px;
+    }
+    .menu a{
+      text-decoration:none;
+      color:var(--ink);
+      transition:color 0.2s ease;
+    }
+    .menu a:hover{color:var(--accent)}
 
-    /* Sections */
-    section{padding:64px 0; border-bottom:1px solid var(--border); scroll-margin-top:90px;}
-    h1{font-size:clamp(36px,5vw,56px); line-height:1.05; letter-spacing:.32em; margin:0}
-    .subtitle{margin-top:18px; letter-spacing:.38em; font-size:12px; color:var(--muted)}
-    h2{font-size:clamp(18px,2.4vw,22px); letter-spacing:.35em; font-weight:800; margin:0 0 24px}
+    section{
+      padding:96px 0;
+      border-bottom:1px solid var(--line);
+      scroll-margin-top:100px;
+    }
+    .hero{
+      text-align:center;
+      padding-top:110px;
+    }
+    .hero h1{
+      font-family:"Playfair Display", "Times New Roman", Times, serif;
+      font-weight:500;
+      font-size:clamp(44px, 6vw, 86px);
+      margin:0;
+      letter-spacing:0.02em;
+    }
+    .hero .role{
+      margin-top:18px;
+      font-size:clamp(18px, 2.4vw, 26px);
+      color:var(--muted);
+      letter-spacing:0.04em;
+    }
+    .hero .subtitle{
+      margin-top:12px;
+      text-transform:uppercase;
+      letter-spacing:0.34em;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .hero .lead{
+      margin:26px auto 0;
+      max-width:720px;
+      color:var(--muted);
+      font-size:18px;
+    }
+    .cta{
+      margin-top:30px;
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
 
-    /* Cards */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 22px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      text-decoration:none;
+      background:#fff;
+      color:var(--ink);
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
+      transition:transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:hover{transform:translateY(-2px); box-shadow:0 16px 30px rgba(0,0,0,0.1)}
+    .btn.primary{background:var(--ink); color:#fff; border-color:var(--ink)}
+
+    .section-title{
+      font-family:"Playfair Display", "Times New Roman", Times, serif;
+      font-size:clamp(28px, 3vw, 40px);
+      margin:0 0 22px;
+    }
+    .lead{max-width:760px; color:var(--muted); font-size:18px}
+
     .grid{display:grid; gap:24px}
-    @media (min-width: 768px){
-      .grid-2{grid-template-columns:1fr 1fr}
-      .grid-3{grid-template-columns:1fr 1fr 1fr}
+    .grid-2{grid-template-columns:repeat(2, minmax(0, 1fr))}
+    .grid-3{grid-template-columns:repeat(3, minmax(0, 1fr))}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:0 14px 30px rgba(0,0,0,0.06);
+      transition:transform 0.35s ease, box-shadow 0.35s ease;
     }
-    .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-1)}
-    .card:hover{box-shadow:var(--shadow-2)}
-    .card h3{margin:0; font-size:16px; letter-spacing:.06em}
-    .card p{margin:8px 0 0; font-size:14px; color:#333}
+    .card:hover{transform:translateY(-6px); box-shadow:var(--shadow)}
+    .label{
+      text-transform:uppercase;
+      letter-spacing:0.26em;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .cv-card h3,
+    .case-card h3{
+      margin:10px 0 6px;
+      font-family:"Playfair Display", "Times New Roman", Times, serif;
+      font-size:22px;
+    }
+    .cv-card a{ text-decoration:underline; text-underline-offset:4px }
+    .case-meta{ color:var(--muted); font-size:14px; margin-bottom:16px }
+    .case-link{ text-decoration:none; border-bottom:1px solid currentColor }
 
-    /* Contact cards */
-    .kicker{font-size:11px; color:#7A7A7A; letter-spacing:.22em; text-transform:uppercase}
+    .split{display:grid; grid-template-columns:1.1fr 0.9fr; gap:32px}
+    .aside{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px}
+    .aside h4{margin:0 0 12px; font-size:14px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted)}
 
-    /* Footer */
-    footer{padding:40px 0; text-align:center; color:#8A8A8A; font-size:11px; border-top:1px solid var(--border)}
+    .contact-grid{display:grid; gap:18px; grid-template-columns:repeat(3, minmax(0, 1fr))}
+    .contact-item{padding:18px; border:1px solid var(--line); border-radius:16px; background:#fff}
 
-    /* Utilities */
-    .mb-40{margin-bottom:40px}
-    .lead{max-width:720px}
-    a{color:inherit}
-    a.underline{ text-decoration:underline; text-underline-offset:4px }
+    footer{padding:40px 0; text-align:center; color:var(--muted); font-size:12px}
+
+    .reveal{opacity:0; transform:translateY(20px); transition:opacity 0.8s ease, transform 0.8s ease}
+    .reveal.in{opacity:1; transform:translateY(0)}
+
+    @media (max-width: 980px){
+      .grid-3{grid-template-columns:1fr 1fr}
+      .split{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 720px){
+      header{position:static}
+      .grid-2, .grid-3{grid-template-columns:1fr}
+      .menu{gap:16px; font-size:11px; letter-spacing:0.2em}
+      section{padding:70px 0}
+      .hero{padding-top:80px}
+    }
   </style>
-    <style>
-    .lead{max-width:720px}
-    a{color:inherit}
-    a.underline{ text-decoration:underline; text-underline-offset:4px }
-  </style>
-
-  <!-- Initiera dataLayer -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'page_context',
-      page_title: document.title,
-      page_path: location.pathname,
-      language: document.documentElement.lang || 'en'
-    });
-  </script>
-
-<script src="data-layer.js"></script>
-
-</head>
-<body>
-
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -132,79 +220,108 @@
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
-  <!-- Header / Navbar -->
+  <div class="backdrop" aria-hidden="true"></div>
+
   <header>
-    <div class="container">
+    <div class="page">
       <nav aria-label="Primary">
-        <a class="brand" href="#top" aria-label="Home">AMELIE URBAN</a>
-        <ul id="mainNav" class="nav" role="list">
-          <li><button type="button" class="menu-btn" data-link="About" data-target="about">About</button></li>
-          <li><button type="button" class="menu-btn" data-link="Services" data-target="services">Services</button></li>
-          <li><button type="button" class="menu-btn" data-link="Cases" data-target="cases">Cases</button></li>
-          <li><button type="button" class="menu-btn" data-link="Contact" data-target="contact">Contact</button></li>
+        <a class="brand" href="#top" aria-label="Home">Amelie Urban</a>
+        <ul class="menu" role="list">
+          <li><a href="#about">About</a></li>
+          <li><a href="#cv">CV</a></li>
+          <li><a href="#cases">Cases</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <main id="top" class="container">
-    <!-- HERO / NAMEPLATE -->
-    <section>
-      <h1>AMELIE URBAN</h1>
-      <p class="subtitle">GROWTH MARKETING STUDENT</p>
-      <p class="subtitle">BERGHS SCHOOL OF COMMUNICATION</p>
+  <main id="top" class="page">
+    <section class="hero reveal">
+      <h1>Amelie Urban</h1>
+      <div class="role">Growth Marketer • Strategic Communicator</div>
+      <div class="subtitle">Stockholm, Sweden</div>
+      <p class="lead">I connect data, creativity, and strategy to build marketing that is clear, relevant, and measurable.</p>
+      <div class="cta">
+        <a class="btn primary" href="#cases">View cases</a>
+        <a class="btn" href="#cv">Download CV</a>
+      </div>
     </section>
 
-    <!-- ABOUT -->
-    <section id="about">
-      <h2>ABOUT</h2>
-      <p class="lead">I’m currently studying Growth Marketing at Berghs School of Communication, building on my academic background in Strategic Communication (B.A.). With a strong interest in the intersection between creativity, data, and strategy, I explore how marketing can drive brand growth through innovative solutions and measurable results.
-
-        This portfolio highlights the projects I’m working on throughout the year, offering insight into my approach, skills, and development. My aim is to combine analytical thinking with creative execution to deliver real impact and contribute to sustainable brand growth.</p>
+    <section id="about" class="reveal">
+      <h2 class="section-title">About me</h2>
+      <div class="split">
+        <div>
+          <p class="lead">Driven and curious with a genuine interest in how brands grow and communicate effectively. I hold a Bachelor’s degree in Strategic Communication and am currently studying Growth Marketing at Berghs to deepen my understanding of data-driven and strategic marketing.</p>
+          <p class="lead">I aim to create value by turning insights into communication that is clear, relevant, and grounded in real audience needs. As a person, I’m structured and reliable, enjoy working with others, and appreciate environments where I can keep learning and being challenged.</p>
+        </div>
+        <div class="aside">
+          <h4>Focus areas</h4>
+          <p>Performance marketing, CRO, SEO/SEM, analytics, and content strategy.</p>
+          <h4>Currently</h4>
+          <p>Growth Marketing student at Berghs School of Communication.</p>
+          <h4>Base</h4>
+          <p>Stockholm, Sweden.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- GROWTH MARKETING AREAS -->
-    <section id="growth marketing areas">
-      <h2 class="mb-40">GROWTH MARKETING AREAS</h2>
+    <section id="cv" class="reveal">
+      <h2 class="section-title">CV</h2>
+      <p class="lead">Download the version you need. Replace the links with your PDF files when ready.</p>
       <div class="grid grid-2">
-        <article class="card"><h3>CRO</h3><p>Optimizing conversion</p></article>
-        <article class="card"><h3>SEO &amp; SEM</h3><p>Search visibility and advertising</p></article>
-        <article class="card"><h3>Google Analytics</h3><p>Website traffic performance insights</p></article>
-        <article class="card"><h3>CRM &amp; Customer Loyalty</h3><p>Managing relationships, driving retention</p></article>
-        <article class="card"><h3>Performance Marketing</h3><p>Data-driven measurable advertising</p></article>
-        <article class="card"><h3>Content Marketing &amp; Social Media</h3><p>Engaging audiences with storytelling</p></article>
-      </div>
-    </section>
-
-    <!-- CASES & COURSES -->
-    <section id="cases and courses">
-      <h2 class="mb-40">CASES & COURSES</h2>
-      <div class="grid grid-3">
-        <article class="card">
-          <h3><a href="fotografiska.html" class="fotografiska">Fotografiska</a></h3>
-          <p>Created a marketing campaign concept for Fotografiska...</p>
-          <p style="margin-top:12px; font-size:14px"><a class="fotografiska" href="fotografiska.html">Read more</a></p>
+        <article class="card cv-card">
+          <div class="label">CV English</div>
+          <h3>Download</h3>
+          <p><a href="CV%20English.pdf" download>CV English.pdf</a></p>
         </article>
-        <article class="card">
-          <h3><a href="google-toolbox.html" class="toolbox">Google Toolbox</a></h3>
-          <p>Through the Google Toolbox course, I learned the basics within GA4, Google Tag Manager, the command line, etc.</p>
-          <p style="margin-top:12px; font-size:14px"><a class="toolbox" href="google-toolbox.html">Read more</a></p>
-        </article>
-        <article class="card">
-          <h3><a href="performance-marketing.html" class="performance">Performance Marketing</a></h3>
-          <p>Going to attend a course in performance marketing.</p>
-          <p style="margin-top:12px; font-size:14px"><a class="performance" href="performance-marketing.html">Read more</a></p>
+        <article class="card cv-card">
+          <div class="label">CV Swedish</div>
+          <h3>Download</h3>
+          <p><a href="CV%20Swedish.pdf" download>CV Swedish.pdf</a></p>
         </article>
       </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact" style="border-bottom:none">
-      <h2 class="mb-40">CONTACT ME</h2>
+    <section id="cases" class="reveal">
+      <h2 class="section-title">Selected cases</h2>
       <div class="grid grid-3">
-        <div class="card"><div class="kicker">Address</div><div>Bobergsvägen 48, 115 42 Stockholm</div></div>
-        <div class="card"><div class="kicker">Email</div><div><a class="mailto" href="mailto:amelie.urban@student.berghs.se">amelie.urban@student.berghs.se</a></div></div>
-        <div class="card"><div class="kicker">LinkedIn</div><div><a class="linkedin" id="linkedinLink" href="https://www.linkedin.com/in/amelie-urban" target="_blank" rel="noopener">linkedin.com/in/amelie-urban</a></div></div>
+        <article class="card case-card">
+          <h3>Fotografiska</h3>
+          <div class="case-meta">Campaign concept • Brand growth</div>
+          <p>Concept development for a marketing campaign that builds reach and engagement for Fotografiska.</p>
+          <p><a class="case-link" href="fotografiska.html">View case</a></p>
+        </article>
+        <article class="card case-card">
+          <h3>Google Toolbox</h3>
+          <div class="case-meta">GA4 • Tag Manager • Analytics</div>
+          <p>Learning fundamentals in GA4, Google Tag Manager, and technical marketing workflows.</p>
+          <p><a class="case-link" href="google-toolbox.html">View case</a></p>
+        </article>
+        <article class="card case-card">
+          <h3>Performance Marketing</h3>
+          <div class="case-meta">Paid media • Optimization</div>
+          <p>Coursework and frameworks for measurable, data-driven advertising and growth.</p>
+          <p><a class="case-link" href="performance-marketing.html">View case</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="reveal" style="border-bottom:none">
+      <h2 class="section-title">Contact</h2>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="label">Address</div>
+          <div>Bobergsvägen 48, 115 42 Stockholm</div>
+        </div>
+        <div class="contact-item">
+          <div class="label">Email</div>
+          <div><a href="mailto:amelie.urban@student.berghs.se">amelie.urban@student.berghs.se</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="label">LinkedIn</div>
+          <div><a href="https://www.linkedin.com/in/amelie-urban" target="_blank" rel="noopener">linkedin.com/in/amelie-urban</a></div>
+        </div>
       </div>
     </section>
   </main>
@@ -213,33 +330,21 @@
     © <span id="year"></span> Amelie Urban
   </footer>
 
-  <!-- Custom JS -->
+  <script src="data-layer.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Nav tracking + smooth scroll (offset handled by CSS scroll-margin-top)
-    document.querySelectorAll('#mainNav .menu-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        window.dataLayer.push({
-          event: 'menu_click',
-          link_text: btn.dataset.link
-        });
-        const target = document.getElementById(btn.dataset.target);
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
       });
-    });
+    }, { threshold: 0.15 });
 
-    // Track LinkedIn clicks
-    const ln = document.getElementById('linkedinLink');
-    if (ln) {
-      ln.addEventListener('click', function () {
-        window.dataLayer.push({
-          event: 'social_click',
-          platform: 'LinkedIn',
-          link_url: this.href
-        });
-      });
-    }
+    reveals.forEach((el) => observer.observe(el));
   </script>
 </body>
 </html>
