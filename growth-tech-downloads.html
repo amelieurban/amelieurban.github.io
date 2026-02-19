@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Downloads — Growth Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg:#f6f2ec; --ink:#121212; --muted:#5d564f; --line:#e0d8cf; --card:#fff; --radius:22px; --maxw:960px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Source Sans 3", sans-serif;
+      color:var(--ink);
+      background:radial-gradient(1200px 900px at 10% -10%, #ffffff 0%, var(--bg) 55%, #f0eae2 100%);
+    }
+    .page{max-width:var(--maxw); margin:auto; padding:80px 24px}
+    h1{font-family:"Playfair Display", serif; font-weight:500; margin:0 0 12px; font-size:40px}
+    p{color:var(--muted); font-size:18px; max-width:760px}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:32px;
+      margin-top:24px;
+      box-shadow:0 16px 30px rgba(0,0,0,0.06);
+      text-align:center;
+    }
+    .btn{
+      display:inline-block;
+      padding:16px 40px;
+      background:var(--ink);
+      color:#fff;
+      font-size:14px;
+      letter-spacing:0.15em;
+      text-transform:uppercase;
+      border-radius:999px;
+      text-decoration:none;
+      border:1px solid var(--ink);
+      transition:all .25s ease;
+      margin:10px 8px;
+    }
+    .btn:hover{background:transparent; color:var(--ink); transform:translateY(-2px)}
+    .btn.secondary{
+      background:transparent;
+      color:var(--ink);
+      border:1px solid var(--line);
+    }
+    .btn.secondary:hover{border-color:var(--ink)}
+    .back{margin-top:30px; display:inline-block; text-decoration:none; border-bottom:1px solid currentColor; color:var(--ink)}
+    code{font-size:0.95em}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>Your downloads</h1>
+    <p>
+      Thanks! Choose what you want to download below.
+    </p>
+
+    <div class="card">
+      <a class="btn" href="downloads/price-predictor-extension.zip" download>
+        Download extension (ZIP)
+      </a>
+
+      <a class="btn secondary" href="downloads/how-to-build-a-plugin.pdf" download>
+        Download step-by-step guide (PDF)
+      </a>
+
+      <p style="margin-top:18px; font-size:14px;">
+        Tip: Unzip → Open <code>chrome://extensions</code> → Enable Developer mode → Load unpacked → Select folder
+      </p>
+    </div>
+
+    <a class="back" href="growth-tech.html">Back to Growth Tech</a>
+  </main>
+</body>
+</html>

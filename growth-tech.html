@@ -122,7 +122,7 @@
       text-align:center;
     }
 
-    /* Make button work for both <a> and <button> */
+    /* Buttons */
     .download-btn{
       display:inline-block;
       padding:16px 40px;
@@ -137,10 +137,29 @@
       border:1px solid var(--ink);
       cursor:pointer;
     }
-
     .download-btn:hover{
       background:transparent;
       color:var(--ink);
+      transform:translateY(-2px);
+    }
+
+    .secondary-btn{
+      display:inline-block;
+      margin-top:12px;
+      padding:14px 34px;
+      background:transparent;
+      color:var(--ink);
+      font-size:13px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      border-radius:999px;
+      text-decoration:none;
+      transition:all 0.25s ease;
+      border:1px solid var(--line);
+      cursor:pointer;
+    }
+    .secondary-btn:hover{
+      border-color:var(--ink);
       transform:translateY(-2px);
     }
 
@@ -164,7 +183,6 @@
 </head>
 
 <body>
-
   <div id="gate" class="gate">
     <div class="gate-box">
       <h1>Growth Tech</h1>
@@ -192,9 +210,9 @@
       </p>
 
       <div class="extension-download">
-        <!-- Lead magnet: opens Tally modal -->
+        <!-- Button 1: Extension -->
         <button
-          id="leadMagnetBtn"
+          id="leadExtensionBtn"
           class="download-btn"
           type="button"
           data-tally-open="jayW4E"
@@ -204,10 +222,21 @@
           Download extension
         </button>
 
+        <!-- Button 2: PDF guide -->
+        <button
+          id="leadPdfBtn"
+          class="secondary-btn"
+          type="button"
+          data-tally-open="jayW4E"
+          data-tally-layout="modal"
+          data-tally-width="520"
+        >
+          Step-by-step to build a plugin
+        </button>
+
         <p class="install-note">
-          You’ll get access to the extension download + a short case breakdown.<br>
-          After submitting the form, you’ll be redirected to the download page.
-          (If you need it: the file lives at <code>downloads/price-predictor-extension.zip</code>.)
+          Both downloads are gated via a short form (Tally). After submitting,
+          you’ll land on a download page where you can download the extension ZIP and the PDF guide.
         </p>
       </div>
     </div>
@@ -226,11 +255,7 @@
       gate.classList.add('hidden');
       content.classList.remove('hidden');
       sessionStorage.setItem('growthtech_unlocked', '1');
-
-      // Optional GTM event
-      if (window.dataLayer) {
-        window.dataLayer.push({ event: 'growthtech_unlock' });
-      }
+      if (window.dataLayer) window.dataLayer.push({ event: 'growthtech_unlock' });
     }
 
     if(sessionStorage.getItem('growthtech_unlocked') === '1'){
@@ -242,26 +267,29 @@
       if(input.value === PASSWORD){
         unlock();
       } else {
-        if (window.dataLayer) {
-          window.dataLayer.push({ event: 'growthtech_unlock_failed' });
-        }
+        if (window.dataLayer) window.dataLayer.push({ event: 'growthtech_unlock_failed' });
       }
       input.value='';
     });
 
-    // Optional GTM tracking for lead magnet click
-    const leadBtn = document.getElementById('leadMagnetBtn');
-    if (leadBtn) {
-      leadBtn.addEventListener('click', () => {
-        if (window.dataLayer) {
-          window.dataLayer.push({ event: 'lead_magnet_click', lead_magnet: 'tally_modal', asset: 'price_predictor' });
-        }
+    // Optional GTM tracking for button clicks
+    const extBtn = document.getElementById('leadExtensionBtn');
+    const pdfBtn = document.getElementById('leadPdfBtn');
+
+    if (extBtn) {
+      extBtn.addEventListener('click', () => {
+        if (window.dataLayer) window.dataLayer.push({ event: 'lead_magnet_click', asset: 'extension_zip' });
+      });
+    }
+
+    if (pdfBtn) {
+      pdfBtn.addEventListener('click', () => {
+        if (window.dataLayer) window.dataLayer.push({ event: 'lead_magnet_click', asset: 'pdf_guide' });
       });
     }
   </script>
 
   <!-- Tally embed (required for modal) -->
   <script async src="https://tally.so/widgets/embed.js"></script>
-
 </body>
 </html>
