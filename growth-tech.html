@@ -32,15 +32,14 @@
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:"Source Sans 3", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family:"Source Sans 3", sans-serif;
       color:var(--ink);
       background:radial-gradient(1200px 900px at 10% -10%, #ffffff 0%, var(--bg) 55%, #f0eae2 100%);
-      text-rendering:optimizeLegibility;
-      -webkit-font-smoothing:antialiased;
     }
+    .page{max-width:var(--maxw); margin:auto; padding:80px 24px}
     a{color:inherit}
-    .page{max-width:var(--maxw); margin-inline:auto; padding:80px 24px}
 
+    /* Gate */
     .gate{
       position:fixed;
       inset:0;
@@ -61,7 +60,7 @@
       text-align:center;
     }
     .gate-box h1{
-      font-family:"Playfair Display", "Times New Roman", Times, serif;
+      font-family:"Playfair Display", serif;
       margin:0 0 10px;
       font-weight:500;
       font-size:34px;
@@ -87,91 +86,144 @@
       letter-spacing:0.2em;
       cursor:pointer;
     }
-    .gate-box .error{color:#b00020; min-height:20px; margin-top:8px; font-size:14px}
-
     .hidden{display:none}
 
     h2{
-      font-family:"Playfair Display", "Times New Roman", Times, serif;
+      font-family:"Playfair Display", serif;
       font-weight:500;
       font-size:clamp(28px, 3vw, 40px);
       margin:0 0 18px;
     }
-    .lead{color:var(--muted); font-size:18px; max-width:720px}
+
+    .lead{
+      color:var(--muted);
+      font-size:18px;
+      max-width:720px;
+    }
+
     .card{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
-      padding:28px;
-      margin-top:24px;
+      padding:32px;
+      margin-top:32px;
       box-shadow:0 16px 30px rgba(0,0,0,0.06);
     }
-    .back{margin-top:30px; display:inline-block; text-decoration:none; border-bottom:1px solid currentColor}
+
+    .card h3{
+      font-family:"Playfair Display", serif;
+      font-weight:500;
+      font-size:26px;
+      margin-top:0;
+    }
+
+    .extension-download{
+      margin-top:28px;
+      text-align:center;
+    }
+
+    .download-btn{
+      display:inline-block;
+      padding:16px 40px;
+      background:var(--ink);
+      color:#fff;
+      font-size:14px;
+      letter-spacing:0.15em;
+      text-transform:uppercase;
+      border-radius:999px;
+      text-decoration:none;
+      transition:all 0.25s ease;
+      border:1px solid var(--ink);
+    }
+
+    .download-btn:hover{
+      background:transparent;
+      color:var(--ink);
+      transform:translateY(-2px);
+    }
+
+    .install-note{
+      margin-top:16px;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .back{
+      margin-top:30px;
+      display:inline-block;
+      text-decoration:none;
+      border-bottom:1px solid currentColor;
+    }
   </style>
 </head>
-<body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54ZJD9CZ"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
 
-  <div id="gate" class="gate" aria-live="polite">
+<body>
+
+  <div id="gate" class="gate">
     <div class="gate-box">
       <h1>Growth Tech</h1>
       <p>Enter the password to access this page.</p>
       <form id="gateForm">
-        <input id="gatePassword" type="password" autocomplete="off" placeholder="Password" aria-label="Password" />
+        <input id="gatePassword" type="password" autocomplete="off" placeholder="Password" />
         <button type="submit">Enter</button>
-        <div id="gateError" class="error"></div>
       </form>
     </div>
   </div>
 
   <main id="content" class="page hidden">
     <h2>Growth Tech</h2>
-    <p class="lead">This is a private page. Replace this copy with your Growth Tech content.</p>
+    <p class="lead">
+      Dynamic Price Predictor is a Chrome extension that tracks product prices,
+      stores historical price data, calculates lowest and highest values,
+      and signals when it might be a good time to buy.
+    </p>
+
     <div class="card">
-      <p>Add case notes, research, or resources here.</p>
+      <h3>Dynamic Price Predictor</h3>
+      <p>
+        Built using Chrome Extension APIs, JavaScript parsing logic,
+        and local storage for price history tracking.
+      </p>
+
+      <div class="extension-download">
+        <a href="downloads/price-predictor-extension.zip" download class="download-btn">
+          Download extension
+        </a>
+        <p class="install-note">
+          Unzip → Open chrome://extensions → Enable Developer Mode →
+          Click “Load unpacked” → Select the folder
+        </p>
+      </div>
     </div>
+
     <a class="back" href="index.html">Back to homepage</a>
   </main>
 
-  <script src="data-layer.js"></script>
   <script>
     const PASSWORD = "growthtech";
     const gate = document.getElementById('gate');
     const content = document.getElementById('content');
     const form = document.getElementById('gateForm');
     const input = document.getElementById('gatePassword');
-    const error = document.getElementById('gateError');
 
-    function unlock() {
+    function unlock(){
       gate.classList.add('hidden');
       content.classList.remove('hidden');
       sessionStorage.setItem('growthtech_unlocked', '1');
-      if (window.dataLayer) {
-        window.dataLayer.push({ event: 'growthtech_unlock' });
-      }
     }
 
-    if (sessionStorage.getItem('growthtech_unlocked') === '1') {
+    if(sessionStorage.getItem('growthtech_unlocked') === '1'){
       unlock();
     }
 
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      if (input.value === PASSWORD) {
-        error.textContent = '';
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(input.value === PASSWORD){
         unlock();
-      } else {
-        error.textContent = 'Wrong password. Please try again.';
-        if (window.dataLayer) {
-          window.dataLayer.push({ event: 'growthtech_unlock_failed' });
-        }
       }
-      input.value = '';
-      input.focus();
+      input.value='';
     });
   </script>
+
 </body>
 </html>
