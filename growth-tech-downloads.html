@@ -1,84 +1,249 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Downloads — Growth Tech</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Step-by-step: Build a Chrome extension</title>
+
+  <!-- Tailwind (forms plugin) -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Fonts + Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#1173d4",
+            "background-light": "#f6f7f8",
+            "background-dark": "#101922",
+          },
+          fontFamily: { display: ["Manrope"] },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px",
+          },
+        },
+      },
+    };
+  </script>
+
   <style>
-    :root{
-      --bg:#f6f2ec; --ink:#121212; --muted:#5d564f; --line:#e0d8cf; --card:#fff; --radius:22px; --maxw:960px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:"Source Sans 3", sans-serif;
-      color:var(--ink);
-      background:radial-gradient(1200px 900px at 10% -10%, #ffffff 0%, var(--bg) 55%, #f0eae2 100%);
-    }
-    .page{max-width:var(--maxw); margin:auto; padding:80px 24px}
-    h1{font-family:"Playfair Display", serif; font-weight:500; margin:0 0 12px; font-size:40px}
-    p{color:var(--muted); font-size:18px; max-width:760px}
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      padding:32px;
-      margin-top:24px;
-      box-shadow:0 16px 30px rgba(0,0,0,0.06);
-      text-align:center;
-    }
-    .btn{
-      display:inline-block;
-      padding:16px 40px;
-      background:var(--ink);
-      color:#fff;
-      font-size:14px;
-      letter-spacing:0.15em;
-      text-transform:uppercase;
-      border-radius:999px;
-      text-decoration:none;
-      border:1px solid var(--ink);
-      transition:all .25s ease;
-      margin:10px 8px;
-    }
-    .btn:hover{background:transparent; color:var(--ink); transform:translateY(-2px)}
-    .btn.secondary{
-      background:transparent;
-      color:var(--ink);
-      border:1px solid var(--line);
-    }
-    .btn.secondary:hover{border-color:var(--ink)}
-    .back{margin-top:30px; display:inline-block; text-decoration:none; border-bottom:1px solid currentColor; color:var(--ink)}
-    code{font-size:0.95em}
+    body { font-family: "Manrope", sans-serif; }
+    body { min-height: max(884px, 100dvh); }
   </style>
 </head>
-<body>
-  <main class="page">
-    <h1>Your downloads</h1>
-    <p>
-      Thanks! Choose what you want to download below.
-    </p>
 
-    <div class="card">
-      <a class="btn" href="downloads/price-predictor-extension.zip" download>
-        Download extension (ZIP)
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+  <div class="relative flex h-screen w-full flex-col bg-white dark:bg-background-dark overflow-x-hidden">
+
+    <!-- Header -->
+    <div class="flex items-center bg-white dark:bg-background-dark p-4 pb-2 justify-between border-b border-slate-100 dark:border-slate-800">
+      <a href="growth-tech.html"
+         class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center justify-start"
+         aria-label="Back">
+        <span class="material-symbols-outlined cursor-pointer">arrow_back</span>
       </a>
-
-      <a class="btn secondary"
-   href="downloads/How-to-build-a-plug-in.pdf"
-   download>
-   Download step-by-step guide (PDF)
-</a>
-
-      <p style="margin-top:18px; font-size:14px;">
-        Tip: Unzip → Open <code>chrome://extensions</code> → Enable Developer mode → Load unpacked → Select folder
-      </p>
+      <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12"></h2>
     </div>
 
-    <a class="back" href="growth-tech.html">Back to Growth Tech</a>
-  </main>
+    <!-- Content -->
+    <div class="flex-1 overflow-y-auto px-6 py-8">
+      <div class="max-w-md mx-auto">
+        <h1 class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl font-extrabold leading-tight mb-2">
+          Learn how to build a chrome extension step by step
+        </h1>
+
+        <p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-relaxed mb-8">
+          Download the step-by-step guide and learn the essentials for building plugin-extensions.
+        </p>
+
+        <!-- Success message -->
+        <div id="successBox" class="hidden mb-6 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-900">
+          <div class="font-semibold">Success ✅</div>
+          <div class="text-sm opacity-90">Your download is starting…</div>
+        </div>
+
+        <!-- Error message -->
+        <div id="errorBox" class="hidden mb-6 rounded-lg border border-rose-200 bg-rose-50 p-4 text-rose-900">
+          <div class="font-semibold">Oops</div>
+          <div id="errorText" class="text-sm opacity-90"></div>
+        </div>
+
+        <form id="leadForm" class="space-y-6" novalidate>
+          <!-- Email -->
+          <div class="flex flex-col gap-2">
+            <label class="text-slate-900 dark:text-slate-100 text-sm font-semibold leading-none">
+              Email Address <span class="text-primary">*</span>
+            </label>
+            <input
+              id="email"
+              class="flex h-14 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              placeholder="e.g. alex@company.com"
+              type="email"
+              required
+            />
+            <p class="text-xs text-slate-500 dark:text-slate-400">We’ll only use this to send the guide + related insights (if you consent).</p>
+          </div>
+
+          <!-- Role -->
+          <div class="flex flex-col gap-2">
+            <label class="text-slate-900 dark:text-slate-100 text-sm font-semibold leading-none">
+              Your Role <span class="text-primary">*</span>
+            </label>
+
+            <div class="relative">
+              <select
+                id="role"
+                class="flex h-14 w-full appearance-none rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                required
+              >
+                <option disabled selected value="">Select your role</option>
+                <option value="student">Student</option>
+                <option value="marketer">Growth Marketer</option>
+                <option value="hacker">Growth Hacker</option>
+                <option value="recruiter">Recruiter</option>
+                <option value="founder">Founder</option>
+                <option value="other">Other</option>
+              </select>
+
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                <span class="material-symbols-outlined">expand_more</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Company optional -->
+          <div class="flex flex-col gap-2">
+            <label class="text-slate-900 dark:text-slate-100 text-sm font-semibold leading-none">
+              Company (Optional)
+            </label>
+            <input
+              id="company"
+              class="flex h-14 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              placeholder="e.g. Acme Corp"
+              type="text"
+            />
+          </div>
+
+          <!-- Consent -->
+          <div class="flex items-start space-x-3 pt-2">
+            <div class="flex h-6 items-center">
+              <input
+                class="h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer"
+                id="consent"
+                name="consent"
+                type="checkbox"
+                required
+              />
+            </div>
+            <div class="text-sm leading-6">
+              <label class="font-medium text-slate-700 dark:text-slate-300 cursor-pointer" for="consent">
+                I agree to be contacted regarding growth and product-related insights. <span class="text-primary">*</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button
+            id="downloadBtn"
+            class="w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all active:scale-[0.98]"
+            type="submit"
+          >
+            Download <span class="material-symbols-outlined text-lg">arrow_forward</span>
+          </button>
+        </form>
+
+        <p class="mt-8 text-center text-xs text-slate-500 dark:text-slate-400">
+          By clicking download, you agree to our Terms of Service and Privacy Policy. We respect your inbox.
+        </p>
+
+        <!-- Hidden download link -->
+        <a id="pdfDownloadLink" class="hidden" href="downloads/How-to-build-a-plug-in.pdf" download></a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const form = document.getElementById("leadForm");
+    const successBox = document.getElementById("successBox");
+    const errorBox = document.getElementById("errorBox");
+    const errorText = document.getElementById("errorText");
+    const pdfLink = document.getElementById("pdfDownloadLink");
+    const btn = document.getElementById("downloadBtn");
+
+    function showError(msg) {
+      errorText.textContent = msg;
+      errorBox.classList.remove("hidden");
+      successBox.classList.add("hidden");
+    }
+
+    function showSuccess() {
+      successBox.classList.remove("hidden");
+      errorBox.classList.add("hidden");
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const role = document.getElementById("role").value;
+      const company = document.getElementById("company").value.trim();
+      const consent = document.getElementById("consent").checked;
+
+      if (!email) return showError("Please enter your email.");
+      if (!isValidEmail(email)) return showError("Please enter a valid email address.");
+      if (!role) return showError("Please select your role.");
+      if (!consent) return showError("You must consent to be contacted to download the guide.");
+
+      // “Lead capture” utan backend: spara lokalt (demo/portfolio)
+      const lead = {
+        email,
+        role,
+        company: company || null,
+        consent,
+        createdAt: new Date().toISOString(),
+        source: "growth-tech-downloads"
+      };
+
+      const key = "growthTechLeads";
+      const existing = JSON.parse(localStorage.getItem(key) || "[]");
+      existing.push(lead);
+      localStorage.setItem(key, JSON.stringify(existing));
+
+      // (Valfritt) event till GTM om dataLayer finns
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          event: "lead_magnet_submit",
+          lead_role: role,
+          lead_has_company: !!company
+        });
+      }
+
+      // UI state
+      btn.disabled = true;
+      btn.classList.add("opacity-80", "cursor-not-allowed");
+      showSuccess();
+
+      // Starta PDF-download
+      // (Lite delay så success-hint syns)
+      setTimeout(() => {
+        pdfLink.click();
+        btn.disabled = false;
+        btn.classList.remove("opacity-80", "cursor-not-allowed");
+      }, 350);
+    });
+  </script>
 </body>
 </html>
