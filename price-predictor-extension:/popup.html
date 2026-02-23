@@ -2,17 +2,37 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Price Predictor</title>
+  <title>Price Predictor + CO₂</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <h1>Price Predictor</h1>
 
+
+
+  <!-- PRICE -->
   <button id="trackBtn">Track this page</button>
   <button id="selectPriceBtn">Select price on page</button>
 
   <div id="status"></div>
   <div id="summary"></div>
+
+  <!-- CO2 -->
+  <h2>CO₂ Impact (Climatiq)</h2>
+
+  <div id="co2Card" class="pp-card">
+    <div id="productBox" class="pp-muted">Reading product data…</div>
+
+    <button id="estimateBtn">Estimate CO₂e</button>
+
+    <div id="co2Status" class="pp-status"></div>
+    <div id="co2Result" class="pp-result"></div>
+
+    <div class="pp-footnote">
+      Estimate baserad på material + antagen vikt. Källa: Climatiq emission factors.
+    </div>
+  </div>
 
   <script src="popup.js"></script>
 </body>

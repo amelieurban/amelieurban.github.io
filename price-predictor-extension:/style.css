@@ -1,96 +1,134 @@
-/* ===== Price Predictor – clean popup UI ===== */
 :root{
-  --bg: #0b1220;
-  --card: rgba(255,255,255,0.08);
-  --card-2: rgba(255,255,255,0.06);
-  --border: rgba(255,255,255,0.12);
-  --text: rgba(255,255,255,0.92);
-  --muted: rgba(255,255,255,0.70);
-  --muted-2: rgba(255,255,255,0.55);
-  --shadow: 0 16px 40px rgba(0,0,0,0.35);
+  --bg:#879df4;
+  --panel:#89a1fa;
+  --stroke:rgba(131, 131, 224, 0.12);
+  --text:#f1f4f8;
+  --muted:rgba(241,244,248,0.7);
+  --accent:#f89ce5;
+  --danger:#ff9aa2;
 }
 
-* { box-sizing: border-box; }
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 320px;               /* nice compact extension size */
-  min-height: 260px;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  color: var(--text);
-  background:
-    radial-gradient(900px 500px at 20% 0%, rgba(99,102,241,0.35), transparent 50%),
-    radial-gradient(700px 450px at 100% 60%, rgba(16,185,129,0.20), transparent 45%),
-    var(--bg);
-}
+*{ box-sizing:border-box; }
 
 body{
+  margin:0;
+  min-width: 360px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.wrap{
   padding: 14px;
 }
 
-/* Title */
 h1{
-  margin: 0 0 12px 0;
+  margin: 0 0 6px;
   font-size: 16px;
-  letter-spacing: 0.2px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
+  letter-spacing: 0.3px;
+}
+
+h2{
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.muted{ color: var(--muted); font-size: 12px; margin: 0 0 12px; }
+.muted2{ color: var(--muted); font-size: 12px; margin-top: 6px; }
+.tiny{ font-size: 11px; margin-top: 12px; }
+
+.card{
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.row{
+  display:flex;
   gap: 8px;
-}
-h1::before{
-  content: "";
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: rgba(99,102,241,0.9);
-  box-shadow: 0 0 0 4px rgba(99,102,241,0.25);
+  align-items:center;
 }
 
-/* Buttons */
-button{
+input{
   width: 100%;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.10);
-  color: var(--text);
-  padding: 10px 12px;
+  padding: 10px 10px;
   border-radius: 12px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform .08s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.22);
+  border: 1px solid var(--stroke);
+  background: rgba(238, 98, 98, 0.25);
+  color: var(--text);
+  outline: none;
 }
 
-button + button{
-  margin-top: 8px;
+button{
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(102, 194, 255, 0.35);
+  background: rgba(114, 133, 228, 0.14);
+  color: var(--text);
+  cursor: pointer;
 }
 
 button:hover{
-  background: rgba(255,255,255,0.16);
-  border-color: rgba(255,255,255,0.18);
+  border-color: rgba(255, 102, 179, 0.65);
 }
 
-button:active{
-  transform: translateY(1px);
+button:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-/* Primary / secondary look (optional)
-   If you add id="trackBtn" and id="selectPriceBtn" this will apply */
-#trackBtn{
-  background: rgba(99,102,241,0.95);
-  border-color: rgba(99,102,241,0.55);
-}
-#trackBtn:hover{
-  background: rgba(99,102,241,1);
-}
-#selectPriceBtn{
-  background: rgba(255,255,255,0.10);
+button.ghost{
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
 }
 
-/* Status & Summary cards */
-#status{
+.status{
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 16px;
+}
+
+.error{ color: var(--danger); font-weight: 700; }
+
+.result{
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px dashed rgba(123, 142, 247, 0.35);
+  background: rgba(119, 137, 237, 0.18);
+}
+
+.big{ font-size: 13px; }
+
+/* ===== CO2 add-on styling (matches existing UI) ===== */
+
+h2{
+  margin: 14px 0 10px 0;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  color: var(--muted);
+}
+
+.pp-card{
+  margin-top: 0;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.pp-muted{
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+
+.pp-status{
   margin-top: 10px;
   font-size: 12px;
   color: var(--muted);
@@ -100,43 +138,28 @@ button:active{
   border: 1px solid var(--border);
 }
 
-#summary{
+.pp-result{
   margin-top: 10px;
   padding: 12px;
   border-radius: 14px;
-  background: var(--card);
+  background: var(--card-2);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow);
 }
-
-/* Summary rows */
-#summary p{
+.pp-result p{
   margin: 0;
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
   gap: 10px;
   padding: 8px 0;
   border-bottom: 1px solid rgba(255,255,255,0.08);
   font-size: 13px;
 }
-#summary p:last-child{
-  border-bottom: none;
-}
+.pp-result p:last-child{ border-bottom: none; }
+.pp-result b{ color: var(--muted); font-weight: 600; }
 
-#summary b{
-  color: var(--muted);
-  font-weight: 600;
+.pp-footnote{
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--muted-2);
+  line-height: 1.35;
 }
-
-/* Optional: nice placeholder if empty */
-#summary:empty{
-  display: none;
-}
-
-/* Make links look nice if you add any later */
-a{
-  color: rgba(99,102,241,0.95);
-  text-decoration: none;
-}
-a:hover{ text-decoration: underline; }
