@@ -93,6 +93,31 @@
     }
     .menu a:hover{color:var(--accent)}
 
+    /* =========================
+       Weather inline (navbar)
+       ========================= */
+    .weather-nav{
+      display:flex;
+      align-items:center;
+      white-space:nowrap;
+      opacity:0.7;
+      transition:opacity 0.2s ease;
+      cursor:default;
+    }
+    .weather-nav:hover{opacity:1}
+    #weather-inline{
+      display:inline-block;
+      max-width: 320px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    @media (max-width: 980px){
+      #weather-inline{max-width: 100%;}
+    }
+    @media (max-width: 720px){
+      .weather-nav{width:100%}
+    }
+
     section{
       padding:96px 0;
       border-bottom:1px solid var(--line);
@@ -231,6 +256,9 @@
           <li><a href="#cv">CV</a></li>
           <li><a href="#cases">Cases</a></li>
           <li><a href="#contact">Contact</a></li>
+          <li class="weather-nav" id="weather-nav" aria-label="Weather in Stockholm">
+            <span id="weather-inline">Stockholm today — …</span>
+          </li>
         </ul>
       </nav>
     </div>
@@ -349,6 +377,41 @@
     }, { threshold: 0.15 });
 
     reveals.forEach((el) => observer.observe(el));
+  </script>
+
+  <script>
+    (async () => {
+      const el = document.getElementById("weather-inline");
+      if (!el) return;
+
+      try {
+        const res = await fetch(
+          "https://api.open-meteo.com/v1/forecast?latitude=59.3293&longitude=18.0686&current=temperature_2m,weather_code&timezone=Europe%2FStockholm",
+          { cache: "no-store" }
+        );
+        if (!res.ok) throw new Error("Weather fetch failed");
+        const data = await res.json();
+
+        const temp = Math.round(data.current.temperature_2m);
+        const code = data.current.weather_code;
+
+        function emoji(c) {
+          if (c === 0) return "☀️";
+          if ([1,2].includes(c)) return "🌤️";
+          if (c === 3) return "☁️";
+          if ([45,48].includes(c)) return "🌫️";
+          if ([51,53,55].includes(c)) return "🌦️";
+          if ([61,63,65,80,81,82].includes(c)) return "🌧️";
+          if ([71,73,75,85,86,77].includes(c)) return "❄️";
+          if ([95,96,99].includes(c)) return "⛈️";
+          return "🌥️";
+        }
+
+        el.textContent = `Stockholm today — ${temp}°C ${emoji(code)}`;
+      } catch {
+        el.textContent = "Stockholm today — ☕️";
+      }
+    })();
   </script>
 </body>
 </html>
