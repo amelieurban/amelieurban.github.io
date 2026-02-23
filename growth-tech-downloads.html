@@ -3,51 +3,42 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Step-by-step: Build a Chrome extension</title>
+  <title>Download — Growth Tech</title>
 
-  <!-- Tailwind (forms plugin) -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-  <!-- Fonts + Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
-  <script>
+  <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
           colors: {
-            primary: "#1173d4",
+            "primary": "#1173d4",
             "background-light": "#f6f7f8",
             "background-dark": "#101922",
           },
-          fontFamily: { display: ["Manrope"] },
-          borderRadius: {
-            DEFAULT: "0.25rem",
-            lg: "0.5rem",
-            xl: "0.75rem",
-            full: "9999px",
+          fontFamily: {
+            "display": ["Manrope"]
           },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
         },
       },
-    };
+    }
   </script>
 
   <style>
-    body { font-family: "Manrope", sans-serif; }
-    body { min-height: max(884px, 100dvh); }
+    body { font-family: 'Manrope', sans-serif; }
   </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
-  <div class="relative flex h-screen w-full flex-col bg-white dark:bg-background-dark overflow-x-hidden">
+  <div class="relative flex min-h-screen w-full flex-col bg-white dark:bg-background-dark overflow-x-hidden">
 
     <!-- Header -->
     <div class="flex items-center bg-white dark:bg-background-dark p-4 pb-2 justify-between border-b border-slate-100 dark:border-slate-800">
-      <a href="growth-tech.html"
-         class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center justify-start"
-         aria-label="Back">
+      <a href="growth-tech.html" class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center justify-start">
         <span class="material-symbols-outlined cursor-pointer">arrow_back</span>
       </a>
       <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12"></h2>
@@ -56,40 +47,22 @@
     <!-- Content -->
     <div class="flex-1 overflow-y-auto px-6 py-8">
       <div class="max-w-md mx-auto">
-        <h1 class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl font-extrabold leading-tight mb-2">
+
+        <h1 id="headline" class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl font-extrabold leading-tight mb-2">
           Learn how to build a chrome extension step by step
         </h1>
-
         <p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-relaxed mb-8">
-          Download the step-by-step guide and learn the essentials for building plugin-extensions.
+          Fill in your details to unlock the download.
         </p>
 
-        <!-- Success message -->
-        <div id="successBox" class="hidden mb-6 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-900">
-          <div class="font-semibold">Success ✅</div>
-          <div class="text-sm opacity-90">Your download is starting…</div>
-        </div>
-
-        <!-- Error message -->
-        <div id="errorBox" class="hidden mb-6 rounded-lg border border-rose-200 bg-rose-50 p-4 text-rose-900">
-          <div class="font-semibold">Oops</div>
-          <div id="errorText" class="text-sm opacity-90"></div>
-        </div>
-
-        <form id="leadForm" class="space-y-6" novalidate>
+        <!-- FORM -->
+        <form id="leadForm" class="space-y-6">
           <!-- Email -->
           <div class="flex flex-col gap-2">
             <label class="text-slate-900 dark:text-slate-100 text-sm font-semibold leading-none">
               Email Address <span class="text-primary">*</span>
             </label>
-            <input
-              id="email"
-              class="flex h-14 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-              placeholder="e.g. alex@company.com"
-              type="email"
-              required
-            />
-            <p class="text-xs text-slate-500 dark:text-slate-400">We’ll only use this to send the guide + related insights (if you consent).</p>
+            <input id="email" class="flex h-14 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" placeholder="e.g. alex@company.com" required type="email"/>
           </div>
 
           <!-- Role -->
@@ -97,13 +70,8 @@
             <label class="text-slate-900 dark:text-slate-100 text-sm font-semibold leading-none">
               Your Role <span class="text-primary">*</span>
             </label>
-
             <div class="relative">
-              <select
-                id="role"
-                class="flex h-14 w-full appearance-none rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                required
-              >
+              <select id="role" class="flex h-14 w-full appearance-none rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" required>
                 <option disabled selected value="">Select your role</option>
                 <option value="student">Student</option>
                 <option value="marketer">Growth Marketer</option>
@@ -112,36 +80,24 @@
                 <option value="founder">Founder</option>
                 <option value="other">Other</option>
               </select>
-
               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                 <span class="material-symbols-outlined">expand_more</span>
               </div>
             </div>
           </div>
 
-          <!-- Company optional -->
+          <!-- Company -->
           <div class="flex flex-col gap-2">
             <label class="text-slate-900 dark:text-slate-100 text-sm font-semibold leading-none">
               Company (Optional)
             </label>
-            <input
-              id="company"
-              class="flex h-14 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              placeholder="e.g. Acme Corp"
-              type="text"
-            />
+            <input id="company" class="flex h-14 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" placeholder="e.g. Acme Corp" type="text"/>
           </div>
 
           <!-- Consent -->
           <div class="flex items-start space-x-3 pt-2">
             <div class="flex h-6 items-center">
-              <input
-                class="h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer"
-                id="consent"
-                name="consent"
-                type="checkbox"
-                required
-              />
+              <input id="consent" class="h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer" required type="checkbox"/>
             </div>
             <div class="text-sm leading-6">
               <label class="font-medium text-slate-700 dark:text-slate-300 cursor-pointer" for="consent">
@@ -151,98 +107,108 @@
           </div>
 
           <!-- Submit -->
-          <button
-            id="downloadBtn"
-            class="w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all active:scale-[0.98]"
-            type="submit"
-          >
-            Download <span class="material-symbols-outlined text-lg">arrow_forward</span>
+          <button class="w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all active:scale-[0.98]" type="submit">
+            Unlock download
+            <span class="material-symbols-outlined text-lg">lock_open</span>
           </button>
+
+          <p id="msg" class="text-center text-sm text-slate-600 dark:text-slate-400 min-h-[20px]"></p>
         </form>
 
-        <p class="mt-8 text-center text-xs text-slate-500 dark:text-slate-400">
-          By clicking download, you agree to our Terms of Service and Privacy Policy. We respect your inbox.
-        </p>
+        <!-- DOWNLOAD AREA -->
+        <div id="downloadBox" class="hidden mt-8 rounded-xl border border-slate-200 dark:border-slate-800 p-5">
+          <h3 class="text-lg font-extrabold mb-2">Download unlocked ✅</h3>
+          <p id="downloadText" class="text-sm text-slate-600 dark:text-slate-400 mb-4"></p>
 
-        <!-- Hidden download link -->
-        <a id="pdfDownloadLink" class="hidden" href="downloads/How-to-build-a-plug-in.pdf" download></a>
+          <a id="downloadLink"
+             class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all active:scale-[0.98]"
+             href="#"
+             download>
+            Download
+            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+          </a>
+
+          <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">
+            If the download doesn’t start, right-click and choose “Save link as…”.
+          </p>
+        </div>
+
+        <p class="mt-8 text-center text-xs text-slate-500 dark:text-slate-400">
+          By clicking subscribe, you agree to our Terms of Service and Privacy Policy. We respect your inbox.
+        </p>
       </div>
     </div>
-
   </div>
 
   <script>
-    const form = document.getElementById("leadForm");
-    const successBox = document.getElementById("successBox");
-    const errorBox = document.getElementById("errorBox");
-    const errorText = document.getElementById("errorText");
-    const pdfLink = document.getElementById("pdfDownloadLink");
-    const btn = document.getElementById("downloadBtn");
-
-    function showError(msg) {
-      errorText.textContent = msg;
-      errorBox.classList.remove("hidden");
-      successBox.classList.add("hidden");
+    // 0) Se till att man kommer från "unlocked" Growth Tech
+    if (sessionStorage.getItem('growthtech_unlocked') !== '1') {
+      // Om någon försöker öppna sidan direkt utan lösenord
+      window.location.href = 'growth-tech.html';
     }
 
-    function showSuccess() {
-      successBox.classList.remove("hidden");
-      errorBox.classList.add("hidden");
-    }
+    // 1) Vilken asset vill vi låsa upp?
+    const params = new URLSearchParams(window.location.search);
+    const asset = params.get('asset') || 'pdf'; // 'zip' eller 'pdf'
 
-    function isValidEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
+    const ASSETS = {
+      zip: {
+        title: "Download the Chrome extension (ZIP)",
+        text: "You can now download the extension ZIP and install it via chrome://extensions → Load unpacked.",
+        href: "downloads/price-predictor-extension.zip",
+        filename: "price-predictor-extension.zip"
+      },
+      pdf: {
+        title: "Download the step-by-step guide (PDF)",
+        text: "You can now download the PDF guide: How to build a Chrome extension step by step.",
+        href: "downloads/How-to-build-a-plug-in.pdf",
+        filename: "How-to-build-a-plug-in.pdf"
+      }
+    };
 
-    form.addEventListener("submit", (e) => {
+    const chosen = ASSETS[asset] || ASSETS.pdf;
+    document.getElementById('headline').textContent = chosen.title;
+
+    // 2) Form submit => (demo) spara lokalt + lås upp download
+    const form = document.getElementById('leadForm');
+    const msg = document.getElementById('msg');
+    const downloadBox = document.getElementById('downloadBox');
+    const downloadText = document.getElementById('downloadText');
+    const downloadLink = document.getElementById('downloadLink');
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const email = document.getElementById("email").value.trim();
-      const role = document.getElementById("role").value;
-      const company = document.getElementById("company").value.trim();
-      const consent = document.getElementById("consent").checked;
-
-      if (!email) return showError("Please enter your email.");
-      if (!isValidEmail(email)) return showError("Please enter a valid email address.");
-      if (!role) return showError("Please select your role.");
-      if (!consent) return showError("You must consent to be contacted to download the guide.");
-
-      // “Lead capture” utan backend: spara lokalt (demo/portfolio)
-      const lead = {
-        email,
-        role,
-        company: company || null,
-        consent,
-        createdAt: new Date().toISOString(),
-        source: "growth-tech-downloads"
+      const payload = {
+        email: document.getElementById('email').value.trim(),
+        role: document.getElementById('role').value,
+        company: document.getElementById('company').value.trim(),
+        consent: document.getElementById('consent').checked,
+        asset,
+        timestamp: new Date().toISOString()
       };
 
-      const key = "growthTechLeads";
-      const existing = JSON.parse(localStorage.getItem(key) || "[]");
-      existing.push(lead);
-      localStorage.setItem(key, JSON.stringify(existing));
+      // --- A) "No backend" demo: spara i localStorage (samlar ej in på riktigt)
+      try {
+        const key = "growthtech_leads";
+        const existing = JSON.parse(localStorage.getItem(key) || "[]");
+        existing.push(payload);
+        localStorage.setItem(key, JSON.stringify(existing));
+      } catch {}
 
-      // (Valfritt) event till GTM om dataLayer finns
-      if (window.dataLayer) {
-        window.dataLayer.push({
-          event: "lead_magnet_submit",
-          lead_role: role,
-          lead_has_company: !!company
-        });
-      }
+      // (Valfritt) GTM event
+      if (window.dataLayer) window.dataLayer.push({ event: 'lead_submit', asset, role: payload.role });
 
-      // UI state
-      btn.disabled = true;
-      btn.classList.add("opacity-80", "cursor-not-allowed");
-      showSuccess();
+      msg.textContent = "Thanks! Download unlocked ✅";
 
-      // Starta PDF-download
-      // (Lite delay så success-hint syns)
-      setTimeout(() => {
-        pdfLink.click();
-        btn.disabled = false;
-        btn.classList.remove("opacity-80", "cursor-not-allowed");
-      }, 350);
+      // Lås upp download
+      downloadText.textContent = chosen.text;
+      downloadLink.href = chosen.href;
+      downloadLink.setAttribute("download", chosen.filename);
+      downloadBox.classList.remove('hidden');
+
+      // scroll till download-knapp
+      downloadBox.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   </script>
 </body>
