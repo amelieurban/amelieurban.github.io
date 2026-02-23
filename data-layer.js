@@ -12,14 +12,15 @@ function pushToDataLayer(event, data) {
     ...data,
     timestamp: new Date().toISOString()
   };
+
   window.dataLayer.push(payload);
 
-  // Logga till konsolen för debug
+  // Debug
   console.log("📊 dataLayer push:", payload);
 }
 
 // =========================
-// Helpers för global click
+// Helpers
 // =========================
 function safeText(str, max = 80) {
   if (!str) return "";
@@ -50,10 +51,19 @@ function cssPath(el) {
   }
 }
 
+function safeAbsUrl(href) {
+  if (!href) return "";
+  try {
+    return new URL(href, window.location.href).href;
+  } catch {
+    return "";
+  }
+}
+
 function isOutbound(url) {
   try {
-    const u = new URL(url, window.location.href);
-    return u.host && u.host !== window.location.host;
+    const u = new URL(url);
+    return u.host !== window.location.host;
   } catch {
     return false;
   }
@@ -61,16 +71,13 @@ function isOutbound(url) {
 
 function getExtension(url) {
   try {
-    const u = new URL(url, window.location.href);
-    const last = (u.pathname || "").split("/").pop() || "";
-    const ext = last.includes(".") ? last.split(".").pop().toLowerCase() : "";
-    return ext;
-  } catch {
-    // fallback (best effort)
     const clean = String(url).split("?")[0].split("#")[0];
     const last = clean.split("/").pop() || "";
-    const ext = last.includes(".") ? last.split(".").pop().toLowerCase() : "";
-    return ext;
+    return last.includes(".")
+      ? last.split(".").pop().toLowerCase()
+      : "";
+  } catch {
+    return "";
   }
 }
 
@@ -82,10 +89,13 @@ const downloadExt = new Set([
   "mp4", "mov", "mp3", "wav"
 ]);
 
-// Unik click-id per sidladdning + räknare
+// =========================
+// Unik click-id
+// =========================
 const pageId =
   (window.crypto && crypto.randomUUID && crypto.randomUUID()) ||
   `p_${Math.random().toString(16).slice(2)}_${Date.now()}`;
+
 let clickCounter = 0;
 
 function makeClickId() {
@@ -97,14 +107,15 @@ function makeClickId() {
 // När sidan laddas
 // =========================
 document.addEventListener("DOMContentLoaded", function () {
-  // 1) Sidvisning
+
+  // Page view
   pushToDataLayer("page_view", {
     page_title: document.title,
     page_location: window.location.href,
     page_path: window.location.pathname
   });
 
-  // 2) Meny-klick (som du hade)
+  // Meny-klick
   document.querySelectorAll("nav a, .menu-btn").forEach(link => {
     link.addEventListener("click", function () {
       pushToDataLayer("menu_click", {
@@ -114,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 3) "View case"-klick (som du hade)
+  // View case klick
   document.querySelectorAll("a, button").forEach(el => {
     if (el.textContent.trim().toLowerCase() === "view case") {
       el.addEventListener("click", function () {
@@ -125,15 +136,16 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   });
+
 });
 
 // =========================
-// 4) GLOBAL click tracking (VARJE KLICK = EGET EVENT)
+// GLOBAL CLICK TRACKING
 // =========================
-document.addEventListener("click", function (e) {
+document.addEventListener("pointerdown", function (e) {
+
   const target = e.target;
 
-  // Vi tar ett "bra" element för metadata (länk/knapp osv), annars target
   const el =
     target?.closest?.("a, button, [role='button'], input, textarea, select, [data-track]") ||
     target;
@@ -143,15 +155,14 @@ document.addEventListener("click", function (e) {
   const clickId = makeClickId();
   const tag = (el.tagName || "").toLowerCase();
 
-  // Om klicket är i en länk
   const a = el.closest?.("a");
   const href = a?.getAttribute?.("href") || "";
-  const linkUrl = href ? new URL(href, window.location.href).href : "";
-  const ext = href ? getExtension(href) : "";
-  const isDownload = !!ext && downloadExt.has(ext);
-  const outbound = href ? isOutbound(href) : false;
 
-  // Valfri manuell märkning i HTML
+  const linkUrl = safeAbsUrl(href);
+  const ext = getExtension(href);
+  const isDownload = ext && downloadExt.has(ext);
+  const outbound = linkUrl ? isOutbound(linkUrl) : false;
+
   const trackName = el.getAttribute?.("data-track") || "";
   const trackValue = el.getAttribute?.("data-track-value") || "";
 
@@ -160,7 +171,6 @@ document.addEventListener("click", function (e) {
     safeText(el.getAttribute?.("title")) ||
     safeText(el.textContent);
 
-  // VARJE klick pushar ett nytt event
   pushToDataLayer("au_click", {
     click_id: clickId,
 
@@ -177,14 +187,13 @@ document.addEventListener("click", function (e) {
     link_href: href || "",
     link_url: linkUrl || "",
     is_outbound: outbound,
-    is_download: isDownload,
+    is_download: isDownload || false,
     file_extension: ext || "",
 
     track_name: trackName,
     track_value: trackValue
   });
 
-  // (Valfritt) extra event för downloads / outbound om du vill ha supersnygga triggers i GTM
   if (isDownload && linkUrl) {
     pushToDataLayer("au_download", {
       click_id: clickId,
@@ -201,10 +210,11 @@ document.addEventListener("click", function (e) {
       page_path: window.location.pathname
     });
   }
+
 }, { capture: true });
 
 // =========================
-// Exempel: logga hela historiken till konsolen
+// Debug helper
 // =========================
 window.showDataLayerHistory = function () {
   console.table(window.dataLayer);
