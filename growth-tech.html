@@ -86,6 +86,13 @@
       letter-spacing:0.2em;
       cursor:pointer;
     }
+    .gate-error{
+      color:#b00020;
+      min-height:20px;
+      margin-top:8px;
+      font-size:14px;
+    }
+
     .hidden{display:none}
 
     h2{
@@ -183,13 +190,14 @@
 </head>
 
 <body>
-  <div id="gate" class="gate">
+  <div id="gate" class="gate" aria-live="polite">
     <div class="gate-box">
       <h1>Growth Tech</h1>
       <p>Enter the password to access this page.</p>
       <form id="gateForm">
-        <input id="gatePassword" type="password" autocomplete="off" placeholder="Password" />
+        <input id="gatePassword" type="password" autocomplete="off" placeholder="Password" aria-label="Password" />
         <button type="submit">Enter</button>
+        <div id="gateError" class="gate-error"></div>
       </form>
     </div>
   </div>
@@ -210,7 +218,7 @@
       </p>
 
       <div class="extension-download">
-        <!-- KLICK -> FORM -> DOWNLOAD -->
+        <!-- KLICK -> FORM -> DOWNLOAD (locked on downloads page) -->
         <a id="leadExtensionLink" class="download-btn" href="growth-tech-downloads.html?asset=zip">
           Download extension
         </a>
@@ -237,6 +245,10 @@
     const content = document.getElementById('content');
     const form = document.getElementById('gateForm');
     const input = document.getElementById('gatePassword');
+    const errorEl = document.getElementById('gateError');
+
+    // Require password EVERY time: clear any previous unlock on page load
+    sessionStorage.removeItem('growthtech_unlocked');
 
     function unlock(){
       gate.classList.add('hidden');
@@ -245,15 +257,13 @@
       if (window.dataLayer) window.dataLayer.push({ event: 'growthtech_unlock' });
     }
 
-    if(sessionStorage.getItem('growthtech_unlocked') === '1'){
-      unlock();
-    }
-
     form.addEventListener('submit', function(e){
       e.preventDefault();
       if(input.value === PASSWORD){
+        errorEl.textContent = '';
         unlock();
       } else {
+        errorEl.textContent = 'Wrong password. Please try again.';
         if (window.dataLayer) window.dataLayer.push({ event: 'growthtech_unlock_failed' });
       }
       input.value='';
