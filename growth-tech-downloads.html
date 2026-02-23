@@ -188,13 +188,18 @@
         timestamp: new Date().toISOString()
       };
 
-      // --- A) "No backend" demo: spara i localStorage (samlar ej in på riktigt)
+      // --- A) Google Sheets backend via Apps Script (samlar in på riktigt)
       try {
-        const key = "growthtech_leads";
-        const existing = JSON.parse(localStorage.getItem(key) || "[]");
-        existing.push(payload);
-        localStorage.setItem(key, JSON.stringify(existing));
-      } catch {}
+        await fetch("https://script.google.com/macros/s/AKfycbzDww456IiMHQ7-UH2kIqUNmUU6F2Qq90FhU8aOfifrRIESnz78BnrIIsKOWRC4KfHP0A/exec", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        msg.textContent = "Could not save your details right now. Please try again.";
+        console.error(err);
+        return;
+      }
 
       // (Valfritt) GTM event
       if (window.dataLayer) window.dataLayer.push({ event: 'lead_submit', asset, role: payload.role });
