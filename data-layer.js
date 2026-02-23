@@ -35,9 +35,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // "Read more"-klick (alla knappar/länkar med texten Read more)
   document.querySelectorAll("a, button").forEach(el => {
-    if (el.textContent.trim().toLowerCase() === "read more") {
+    if (el.textContent.trim().toLowerCase() === "view case") {
       el.addEventListener("click", function() {
-        pushToDataLayer("read_more_click", {
+        pushToDataLayer("view_case_click", {
           link_text: this.textContent.trim(),
           link_url: this.href || null
         });
