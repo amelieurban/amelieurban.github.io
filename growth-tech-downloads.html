@@ -121,7 +121,7 @@
           <p id="downloadText" class="text-sm text-slate-600 dark:text-slate-400 mb-4"></p>
 
           <a id="downloadLink"
-             class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all active:scale-[0.98]"
+             class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 focus:outline-none focus:ring-2 focus-visible:ring-primary focus:ring-offset-2 transition-all active:scale-[0.98]"
              href="#"
              download>
             Download
@@ -189,22 +189,48 @@
       };
 
       // --- A) Google Sheets backend via Apps Script (samlar in på riktigt)
+      // CORS-safe: sendBeacon (POST form-urlencoded) -> fallback: Image beacon (GET)
+      const endpoint = "https://script.google.com/macros/s/AKfycbzDww456IiMHQ7-UH2kIqUNmUU6F2Qq90FhU8aOfifrRIESnz78BnrIIsKOWRC4KfHP0A/exec";
+
+      const qs = new URLSearchParams({
+        email: payload.email,
+        role: payload.role,
+        company: payload.company,
+        consent: String(payload.consent),
+        asset: payload.asset,
+        timestamp: payload.timestamp
+      }).toString();
+
+      let sent = false;
+
       try {
-        await fetch("https://script.google.com/macros/s/AKfycbzDww456IiMHQ7-UH2kIqUNmUU6F2Qq90FhU8aOfifrRIESnz78BnrIIsKOWRC4KfHP0A/exec", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
+        if (navigator.sendBeacon) {
+          const blob = new Blob([qs], { type: "application/x-www-form-urlencoded;charset=UTF-8" });
+          sent = navigator.sendBeacon(endpoint, blob);
+        }
       } catch (err) {
-        msg.textContent = "Could not save your details right now. Please try again.";
-        console.error(err);
-        return;
+        console.warn("sendBeacon failed", err);
+      }
+
+      if (!sent) {
+        try {
+          const img = new Image();
+          img.src = `${endpoint}?${qs}`;
+          sent = true;
+        } catch (err) {
+          console.warn("image beacon failed", err);
+        }
+      }
+
+      // Om tracking inte gick iväg: visa meddelande men lås ändå upp download
+      if (!sent) {
+        msg.textContent = "Could not save your details right now. Download is still unlocked ✅";
       }
 
       // (Valfritt) GTM event
       if (window.dataLayer) window.dataLayer.push({ event: 'lead_submit', asset, role: payload.role });
 
-      msg.textContent = "Thanks! Download unlocked ✅";
+      if (sent) msg.textContent = "Thanks! Download unlocked ✅";
 
       // Lås upp download
       downloadText.textContent = chosen.text;
