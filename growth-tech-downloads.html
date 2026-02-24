@@ -169,7 +169,7 @@
     const chosen = ASSETS[asset] || ASSETS.pdf;
     document.getElementById('headline').textContent = chosen.title;
 
-    // 2) Form submit => (demo) spara lokalt + lås upp download
+    // 2) Form submit => spara i Google Sheets + lås upp download
     const form = document.getElementById('leadForm');
     const msg = document.getElementById('msg');
     const downloadBox = document.getElementById('downloadBox');
@@ -185,52 +185,34 @@
         company: document.getElementById('company').value.trim(),
         consent: document.getElementById('consent').checked,
         asset,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        page: window.location.href,
+        userAgent: navigator.userAgent
       };
 
-      // --- A) Google Sheets backend via Apps Script (samlar in på riktigt)
-      // CORS-safe: sendBeacon (POST form-urlencoded) -> fallback: Image beacon (GET)
+      // --- A) Google Sheets backend via Apps Script (CORS-safe)
+      // Viktigt: undvik application/json för att slippa CORS preflight
       const endpoint = "https://script.google.com/macros/s/AKfycbzDww456IiMHQ7-UH2kIqUNmUU6F2Qq90FhU8aOfifrRIESnz78BnrIIsKOWRC4KfHP0A/exec";
 
-      const qs = new URLSearchParams({
-        email: payload.email,
-        role: payload.role,
-        company: payload.company,
-        consent: String(payload.consent),
-        asset: payload.asset,
-        timestamp: payload.timestamp
-      }).toString();
-
-      let sent = false;
-
       try {
-        if (navigator.sendBeacon) {
-          const blob = new Blob([qs], { type: "application/x-www-form-urlencoded;charset=UTF-8" });
-          sent = navigator.sendBeacon(endpoint, blob);
-        }
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        // Apps Script kan svara med redirect/opaque beroende på mode, så vi kollar bara att den inte throwar.
+        // Om du vill vara strikt: if (!res.ok) throw new Error("Request failed");
       } catch (err) {
-        console.warn("sendBeacon failed", err);
-      }
-
-      if (!sent) {
-        try {
-          const img = new Image();
-          img.src = `${endpoint}?${qs}`;
-          sent = true;
-        } catch (err) {
-          console.warn("image beacon failed", err);
-        }
-      }
-
-      // Om tracking inte gick iväg: visa meddelande men lås ändå upp download
-      if (!sent) {
-        msg.textContent = "Could not save your details right now. Download is still unlocked ✅";
+        msg.textContent = "Could not save your details right now. Please try again.";
+        console.error(err);
+        return;
       }
 
       // (Valfritt) GTM event
       if (window.dataLayer) window.dataLayer.push({ event: 'lead_submit', asset, role: payload.role });
 
-      if (sent) msg.textContent = "Thanks! Download unlocked ✅";
+      msg.textContent = "Thanks! Download unlocked ✅";
 
       // Lås upp download
       downloadText.textContent = chosen.text;
