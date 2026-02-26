@@ -107,15 +107,25 @@
       border-radius:var(--radius);
       padding:34px;
       box-shadow:0 18px 38px rgba(0,0,0,0.08);
-      min-height:220px;
     }
-    .card h3{
+    .card-title{
       font-family:"Playfair Display", "Times New Roman", Times, serif;
       font-weight:500;
       font-size:26px;
       margin:0 0 10px;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
     }
-    .card p{margin:0 0 16px; color:var(--muted)}
+    .card-desc{
+      margin:0 0 16px;
+      color:var(--muted);
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
     .card .note{font-size:13px; color:var(--muted); margin-top:14px}
 
     .card-grid{
@@ -123,7 +133,6 @@
       grid-template-columns:1.1fr 0.9fr;
       gap:24px;
       align-items:stretch;
-      min-height:220px;
     }
 
     .card-actions{
@@ -208,8 +217,8 @@
       <article class="card">
         <div class="card-grid">
           <div>
-            <h3>Dynamic Price Predictor Plugin</h3>
-            <p>Built using Chrome Extension APIs, JavaScript parsing logic, and local storage for price history tracking.</p>
+            <h3 class="card-title">Dynamic Price Predictor Plugin</h3>
+            <p class="card-desc">Built using Chrome Extension APIs, JavaScript parsing logic, and local storage for price history tracking.</p>
           </div>
           <div class="card-actions">
             <a id="leadExtensionLink" class="download-btn" href="growth-tech-downloads.html?asset=zip">Download extension</a>
@@ -221,8 +230,8 @@
       <article class="card">
         <div class="card-grid">
           <div>
-            <h3>Technical Leverage and Exponential Growth guide</h3>
-            <p>Hur kan små tekniska implementationer driva exponentiell tillväxt? I rapporten visar jag hur teknisk hävstång – genom API‑integrationer, automatiserad tracking och browser plugins – kan minska friktion och skapa starkare feedbackloopar.</p>
+            <h3 class="card-title">Technical Leverage and Exponential Growth guide</h3>
+            <p class="card-desc">Guiden visar hur API‑integrationer, automatiserad tracking och browser‑plugins skapar teknisk hävstång och snabbare feedbackloopar.</p>
           </div>
           <div class="card-actions">
             <a id="leadPdfLink" class="secondary-btn" href="growth-tech-downloads.html?asset=pdf">Download</a>
