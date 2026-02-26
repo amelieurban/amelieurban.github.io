@@ -217,7 +217,7 @@
     .aside{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px}
     .aside h4{margin:0 0 12px; font-size:14px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted)}
 
-    .contact-grid{display:grid; gap:18px; grid-template-columns:repeat(4, minmax(0, 1fr))}
+    .contact-grid{display:grid; gap:18px; grid-template-columns:repeat(3, minmax(0, 1fr))}
     .contact-item{padding:18px; border:1px solid var(--line); border-radius:16px; background:#fff}
 
     footer{padding:40px 0; text-align:center; color:var(--muted); font-size:12px}
@@ -253,7 +253,6 @@
         <a class="brand" href="#top" aria-label="Home">Amelie Urban</a>
         <ul class="menu" role="list">
           <li><a href="#about">About</a></li>
-          <li><a href="#cv">CV</a></li>
           <li><a href="#cases">Cases</a></li>
           <li><a href="#contact">Contact</a></li>
           <li class="weather-nav" id="weather-nav" aria-label="Weather in Stockholm">
@@ -272,7 +271,7 @@
       <p class="lead">I connect data, creativity, and strategy to build marketing that is clear, relevant, and measurable.</p>
       <div class="cta">
         <a class="btn primary" href="#cases">View cases</a>
-        <a class="btn" href="#cv">Download CV</a>
+        <a class="btn" href="#contact">Download Resume</a>
       </div>
     </section>
 
@@ -291,23 +290,6 @@
           <h4>Base</h4>
           <p>Stockholm, Sverige.</p>
         </div>
-      </div>
-    </section>
-
-    <section id="cv" class="reveal">
-      <h2 class="section-title">CV</h2>
-      <p class="lead">Download the version you need. Replace the links with your PDF files when ready.</p>
-      <div class="grid grid-2">
-        <article class="card cv-card">
-          <div class="label">CV English</div>
-          <h3>Download</h3>
-          <p><a href="CV%20English.pdf" download>CV English.pdf</a></p>
-        </article>
-        <article class="card cv-card">
-          <div class="label">CV Swedish</div>
-          <h3>Download</h3>
-          <p><a href="CV%20Swedish.pdf" download>CV Swedish.pdf</a></p>
-        </article>
       </div>
     </section>
 
@@ -338,10 +320,7 @@
     <section id="contact" class="reveal" style="border-bottom:none">
       <h2 class="section-title">Contact</h2>
       <div class="contact-grid">
-        <div class="contact-item">
-          <div class="label">Address</div>
-          <div>Stockholm, Sverige</div>
-        </div>
+
         <div class="contact-item">
           <div class="label">Email</div>
           <div><a href="mailto:amelie.urban@student.berghs.se">amelie.urban@student.berghs.se</a></div>
@@ -353,6 +332,14 @@
         <div class="contact-item">
           <div class="label">Growth Tech</div>
           <div><a href="growth-tech.html">Open page</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="label">Resume English</div>
+          <div><a href="CV%20English.pdf" download>Download Resume (EN)</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="label">Resume Swedish</div>
+          <div><a href="CV%20Swedish.pdf" download>Download Resume (SE)</a></div>
         </div>
       </div>
     </section>
