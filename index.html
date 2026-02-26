@@ -204,14 +204,30 @@
       color:var(--muted);
     }
     .cv-card h3,
-    .case-card h3{
+    .work-card h3{
       margin:10px 0 6px;
       font-family:"Playfair Display", "Times New Roman", Times, serif;
       font-size:22px;
     }
     .cv-card a{ text-decoration:underline; text-underline-offset:4px }
-    .case-meta{ color:var(--muted); font-size:14px; margin-bottom:16px }
-    .case-link{ text-decoration:none; border-bottom:1px solid currentColor }
+    .work-meta{ color:var(--muted); font-size:14px; margin-bottom:16px }
+    .work-link{ text-decoration:none; border-bottom:1px solid currentColor }
+
+    .work-card-link{
+      display:block;
+      text-decoration:none;
+      color:inherit;
+      cursor:pointer;
+    }
+    .work-card-link:focus-visible{
+      outline:2px solid var(--ink);
+      outline-offset:4px;
+    }
+    .work-link{
+      display:inline-block;
+      margin-top:12px;
+      border-bottom:1px solid currentColor;
+    }
 
     .split{display:grid; grid-template-columns:1.1fr 0.9fr; gap:32px}
     .aside{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px}
@@ -278,24 +294,24 @@
     <section id="work" class="reveal">
       <h2 class="section-title">Selected work</h2>
       <div class="grid grid-3">
-        <article class="card case-card">
+        <a class="card work-card work-card-link" href="ecommerce.html">
           <h3>E-commerce</h3>
-          <div class="case-meta">Fictive Brand</div>
+          <div class="work-meta">Fictive Brand</div>
           <p>Fictive brand concept focused on positioning, customer journey, and conversion-ready messaging.</p>
-          <p><a class="case-link" href="ecommerce.html">View case</a></p>
-        </article>
-        <article class="card case-card">
+          <p class=\"work-link\">View work</p>
+        </a>
+        <a class="card work-card work-card-link" href="under-your-skin.html">
           <h3>Under Your Skin</h3>
-          <div class="case-meta">CRO &amp; Analysis</div>
-          <p>CRO and analysis case focused on user behavior, funnel insights, and experiment ideas.</p>
-          <p><a class="case-link" href="under-your-skin.html">View case</a></p>
-        </article>
-        <article class="card case-card">
+          <div class="work-meta">CRO &amp; Analysis</div>
+          <p>CRO and analysis focused on user behavior, funnel insights, and experiment ideas.</p>
+          <p class=\"work-link\">View work</p>
+        </a>
+        <a class="card work-card work-card-link" href="omnipollo.html">
           <h3>Omnipollo</h3>
-          <div class="case-meta">Google Ads &amp; GA4</div>
+          <div class="work-meta">Google Ads &amp; GA4</div>
           <p>Google Ads and GA4 setup with a focus on performance insights and reporting.</p>
-          <p><a class="case-link" href="omnipollo.html">View case</a></p>
-        </article>
+          <p class=\"work-link\">View work</p>
+        </a>
       </div>
     </section>
 

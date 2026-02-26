@@ -125,11 +125,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // View case klick
+  // View work klick
+
+  // View work card click
+  document.querySelectorAll(".work-card-link").forEach(link => {
+    link.addEventListener("click", function () {
+      const title = this.querySelector("h3")?.textContent?.trim() || "Work";
+      pushToDataLayer("view_work_click", {
+        link_text: title,
+        link_url: this.href || null
+      });
+    });
+  });
+
   document.querySelectorAll("a, button").forEach(el => {
-    if (el.textContent.trim().toLowerCase() === "view case") {
+    if (el.textContent.trim().toLowerCase() === "view work") {
       el.addEventListener("click", function () {
-        pushToDataLayer("view_case_click", {
+        pushToDataLayer("view_work_click", {
           link_text: this.textContent.trim(),
           link_url: this.href || null
         });
