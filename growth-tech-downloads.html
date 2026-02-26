@@ -1,149 +1,194 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-54ZJD9CZ');</script>
+  <!-- End Google Tag Manager -->
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Download — Growth Tech</title>
+  <meta name="description" content="Growth Tech downloads" />
 
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "primary": "#1173d4",
-            "background-light": "#f6f7f8",
-            "background-dark": "#101922",
-          },
-          fontFamily: {
-            "display": ["Manrope"]
-          },
-          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-        },
-      },
-    }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-    body { font-family: 'Manrope', sans-serif; }
+    :root{
+      --bg:#f3eee7;
+      --ink:#1b1b1b;
+      --muted:#6c645b;
+      --accent:#111111;
+      --line:#e2dad0;
+      --card:#ffffff;
+      --radius:24px;
+      --maxw:720px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Source Sans 3", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg, #f7f3ee 0%, #f0e9df 100%);
+      text-rendering:optimizeLegibility;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit}
+    .page{max-width:var(--maxw); margin-inline:auto; padding:70px 24px 90px}
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:28px;
+    }
+    .back-link{
+      text-decoration:none;
+      border-bottom:1px solid currentColor;
+      font-size:14px;
+    }
+
+    .title{
+      font-family:"Playfair Display", "Times New Roman", Times, serif;
+      font-weight:500;
+      font-size:clamp(30px, 4vw, 46px);
+      margin:0 0 12px;
+    }
+    .lead{color:var(--muted); font-size:18px; margin:0 0 28px}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:30px;
+      box-shadow:0 18px 38px rgba(0,0,0,0.08);
+    }
+
+    .form{display:grid; gap:18px}
+    .field{display:grid; gap:8px}
+    label{font-size:14px; font-weight:600}
+    input[type="text"],
+    input[type="email"],
+    select{
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      font-size:15px;
+      background:#fff;
+    }
+    select{appearance:none; background-image:linear-gradient(45deg, transparent 50%, #666 50%), linear-gradient(135deg, #666 50%, transparent 50%); background-position:calc(100% - 18px) 17px, calc(100% - 12px) 17px; background-size:6px 6px, 6px 6px; background-repeat:no-repeat; padding-right:34px}
+
+    .consent{display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--muted)}
+    .consent input{margin-top:2px}
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px 30px;
+      border-radius:999px;
+      text-decoration:none;
+      font-size:13px;
+      letter-spacing:0.2em;
+      text-transform:uppercase;
+      background:var(--accent);
+      color:#fff;
+      border:1px solid var(--accent);
+      cursor:pointer;
+      transition:all 0.25s ease;
+    }
+    .btn:hover{background:transparent; color:var(--accent); transform:translateY(-2px)}
+
+    .msg{min-height:20px; font-size:13px; color:var(--muted); text-align:center}
+
+    .download-box{
+      margin-top:26px;
+      border:1px dashed var(--line);
+      border-radius:18px;
+      padding:20px;
+    }
+    .download-box h3{margin:0 0 8px; font-size:18px}
+    .download-box p{margin:0 0 16px; color:var(--muted)}
+
+    .hidden{display:none}
+
+    .fine-print{
+      margin-top:24px;
+      font-size:12px;
+      color:var(--muted);
+      text-align:center;
+    }
   </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
-  <div class="relative flex min-h-screen w-full flex-col bg-white dark:bg-background-dark overflow-x-hidden">
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54ZJD9CZ"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Header -->
-    <div class="flex items-center bg-white dark:bg-background-dark p-4 pb-2 justify-between border-b border-slate-100 dark:border-slate-800">
-      <a href="growth-tech.html" class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center justify-start">
-        <span class="material-symbols-outlined cursor-pointer">arrow_back</span>
-      </a>
-      <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12"></h2>
-    </div>
+  <main class="page">
+    <header>
+      <a class="back-link" href="growth-tech.html">← Back to Growth Tech</a>
+    </header>
 
-    <!-- Content -->
-    <div class="flex-1 overflow-y-auto px-6 py-8">
-      <div class="max-w-md mx-auto">
+    <h1 id="headline" class="title">Unlock your download</h1>
+    <p class="lead">Fill in your details to unlock the download. Both downloads are gated via a short form.</p>
 
-        <h1 id="headline" class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl font-extrabold leading-tight mb-2">
-          Learn how to build a chrome extension step by step
-        </h1>
-        <p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-relaxed mb-8">
-          Fill in your details to unlock the download.
-        </p>
-
-        <!-- FORM -->
-        <form id="leadForm" class="space-y-6">
-          <!-- Email -->
-          <div class="flex flex-col gap-2">
-            <label class="text-slate-900 dark:text-slate-100 text-sm font-semibold leading-none">
-              Email Address <span class="text-primary">*</span>
-            </label>
-            <input id="email" class="flex h-14 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" placeholder="e.g. alex@company.com" required type="email"/>
-          </div>
-
-          <!-- Role -->
-          <div class="flex flex-col gap-2">
-            <label class="text-slate-900 dark:text-slate-100 text-sm font-semibold leading-none">
-              Your Role <span class="text-primary">*</span>
-            </label>
-            <div class="relative">
-              <select id="role" class="flex h-14 w-full appearance-none rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" required>
-                <option disabled selected value="">Select your role</option>
-                <option value="student">Student</option>
-                <option value="marketer">Growth Marketer</option>
-                <option value="hacker">Growth Hacker</option>
-                <option value="recruiter">Recruiter</option>
-                <option value="founder">Founder</option>
-                <option value="other">Other</option>
-              </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                <span class="material-symbols-outlined">expand_more</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Company -->
-          <div class="flex flex-col gap-2">
-            <label class="text-slate-900 dark:text-slate-100 text-sm font-semibold leading-none">
-              Company (Optional)
-            </label>
-            <input id="company" class="flex h-14 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" placeholder="e.g. Acme Corp" type="text"/>
-          </div>
-
-          <!-- Consent -->
-          <div class="flex items-start space-x-3 pt-2">
-            <div class="flex h-6 items-center">
-              <input id="consent" class="h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer" required type="checkbox"/>
-            </div>
-            <div class="text-sm leading-6">
-              <label class="font-medium text-slate-700 dark:text-slate-300 cursor-pointer" for="consent">
-                I agree to be contacted regarding growth and product-related insights. <span class="text-primary">*</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Submit -->
-          <button class="w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all active:scale-[0.98]" type="submit">
-            Unlock download
-            <span class="material-symbols-outlined text-lg">lock_open</span>
-          </button>
-
-          <p id="msg" class="text-center text-sm text-slate-600 dark:text-slate-400 min-h-[20px]"></p>
-        </form>
-
-        <!-- DOWNLOAD AREA -->
-        <div id="downloadBox" class="hidden mt-8 rounded-xl border border-slate-200 dark:border-slate-800 p-5">
-          <h3 class="text-lg font-extrabold mb-2">Download unlocked ✅</h3>
-          <p id="downloadText" class="text-sm text-slate-600 dark:text-slate-400 mb-4"></p>
-
-          <a id="downloadLink"
-             class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 focus:outline-none focus:ring-2 focus-visible:ring-primary focus:ring-offset-2 transition-all active:scale-[0.98]"
-             href="#"
-             download>
-            Download
-            <span class="material-symbols-outlined text-lg">arrow_forward</span>
-          </a>
-
-          <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">
-            If the download doesn’t start, right-click and choose “Save link as…”.
-          </p>
+    <section class="card">
+      <form id="leadForm" class="form">
+        <div class="field">
+          <label for="email">Email Address *</label>
+          <input id="email" type="email" placeholder="e.g. alex@company.com" required />
         </div>
 
-        <p class="mt-8 text-center text-xs text-slate-500 dark:text-slate-400">
-          By clicking subscribe, you agree to our Terms of Service and Privacy Policy. We respect your inbox.
-        </p>
+        <div class="field">
+          <label for="role">Your Role *</label>
+          <select id="role" required>
+            <option disabled selected value="">Select your role</option>
+            <option value="student">Student</option>
+            <option value="marketer">Growth Marketer</option>
+            <option value="hacker">Growth Hacker</option>
+            <option value="recruiter">Recruiter</option>
+            <option value="founder">Founder</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="company">Company (Optional)</label>
+          <input id="company" type="text" placeholder="e.g. Acme Corp" />
+        </div>
+
+        <label class="consent" for="consent">
+          <input id="consent" type="checkbox" required />
+          I agree to be contacted regarding growth and product-related insights. *
+        </label>
+
+        <button class="btn" type="submit">Unlock download</button>
+        <p id="msg" class="msg"></p>
+      </form>
+
+      <div id="downloadBox" class="download-box hidden">
+        <h3>Download unlocked ✅</h3>
+        <p id="downloadText"></p>
+        <a id="downloadLink" class="btn" href="#" download>Download</a>
+        <p class="fine-print">If the download doesn’t start, right‑click and choose “Save link as…”.</p>
       </div>
-    </div>
-  </div>
+    </section>
+
+    <p class="fine-print">By clicking subscribe, you agree to our Terms of Service and Privacy Policy. We respect your inbox.</p>
+  </main>
 
   <script>
     // 0) Se till att man kommer från "unlocked" Growth Tech
     if (sessionStorage.getItem('growthtech_unlocked') !== '1') {
-      // Om någon försöker öppna sidan direkt utan lösenord
       window.location.href = 'growth-tech.html';
     }
 
@@ -190,39 +235,31 @@
         userAgent: navigator.userAgent
       };
 
-      // --- A) Google Sheets backend via Apps Script (CORS-safe)
-      // Viktigt: undvik application/json för att slippa CORS preflight
       const endpoint = "https://script.google.com/macros/s/AKfycbzDww456IiMHQ7-UH2kIqUNmUU6F2Qq90FhU8aOfifrRIESnz78BnrIIsKOWRC4KfHP0A/exec";
 
       try {
-        const res = await fetch(endpoint, {
+        await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
         });
-
-        // Apps Script kan svara med redirect/opaque beroende på mode, så vi kollar bara att den inte throwar.
-        // Om du vill vara strikt: if (!res.ok) throw new Error("Request failed");
       } catch (err) {
         msg.textContent = "Could not save your details right now. Please try again.";
         console.error(err);
         return;
       }
 
-      // (Valfritt) GTM event
       if (window.dataLayer) window.dataLayer.push({ event: 'lead_submit', asset, role: payload.role });
 
       msg.textContent = "Thanks! Download unlocked ✅";
-
-      // Lås upp download
       downloadText.textContent = chosen.text;
       downloadLink.href = chosen.href;
       downloadLink.setAttribute("download", chosen.filename);
       downloadBox.classList.remove('hidden');
-
-      // scroll till download-knapp
       downloadBox.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   </script>
+
+  <script src="data-layer.js"></script>
 </body>
 </html>
