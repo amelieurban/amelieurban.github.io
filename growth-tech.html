@@ -142,6 +142,31 @@
       justify-content:center;
       height:100%;
       text-align:center;
+      gap:16px;
+    }
+
+    .card-media{
+      width:min(360px, 100%);
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:#f2ece4;
+      box-shadow:0 12px 24px rgba(0,0,0,0.06);
+      overflow:hidden;
+    }
+    .card-media img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+    .card-media.placeholder{
+      min-height:160px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-size:14px;
+      text-align:center;
+      padding:12px;
     }
 
     .download-btn,
@@ -234,6 +259,19 @@
           <div class="card-actions">
             <a id="leadPdfLink" class="secondary-btn" href="growth-tech-downloads.html?asset=pdf">Download</a>
             <div class="note">Both downloads are gated via a short form. After submitting, your download will unlock.</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-grid">
+          <div>
+            <h3 class="card-title">X-post of whitepaper</h3>
+            <p class="card-desc">Read the public post that shares the whitepaper and gives the context behind the work.</p>
+          </div>
+          <div class="card-actions">
+            <div class="card-media"><img src="images/x-post.png" alt="X post about the whitepaper" /></div>
+            <a class="secondary-btn" href="https://x.com/amelie1282175" target="_blank" rel="noopener">Open on X</a>
           </div>
         </div>
       </article>
