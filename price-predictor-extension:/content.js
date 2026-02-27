@@ -80,25 +80,62 @@
     return "SEK";
   }
 
-  // NEW: if multiple prices exist in the same text (sale + original), choose the lowest.
+  /**
+   * Fix:
+   * - Sale pages can include 2 prices (current + original): pick the lowest (only if sale context).
+   * - Pages often include other prices (shipping, Klarna/monthly, etc.): filter those out using nearby text context.
+   * - If NOT sale context: pick the earliest plausible price (not the minimum across the whole page).
+   */
   function extractPriceFromText(text) {
     if (!text) return null;
 
-    const matches = [...String(text).matchAll(/(\d{1,5}(?:[.,]\d{2})?)\s?(kr|sek|€|\$)/ig)];
+    const str = String(text);
+
+    // Find all prices
+    const matches = [...str.matchAll(/(\d{1,5}(?:[.,]\d{2})?)\s?(kr|sek|€|\$)/ig)];
     if (!matches.length) return null;
 
+    function contextAround(index, span = 36) {
+      const start = Math.max(0, index - span);
+      const end = Math.min(str.length, index + span);
+      return str.slice(start, end).toLowerCase();
+    }
+
+    // Things that often indicate it's NOT the product's current price
+    // (monthly payment, financing, shipping, etc.)
+    const BAD_CONTEXT =
+      /(\/\s*mån|kr\s*\/\s*mån|per\s*month|\/\s*month|\bmån\b|\bmonth\b|klarna|delbetal|installment|finansier|frakt|shipping|delivery)/i;
+
     const parsed = matches
-      .map((m) => ({
-        value: parseFloat(String(m[1]).replace(",", ".")),
-        currency: normalizeCurrency(m[2])
-      }))
-      .filter((p) => Number.isFinite(p.value));
+      .map((m) => {
+        const value = parseFloat(String(m[1]).replace(",", "."));
+        if (!Number.isFinite(value)) return null;
 
-    if (!parsed.length) return null;
+        const currency = normalizeCurrency(m[2]);
+        const idx = typeof m.index === "number" ? m.index : str.indexOf(m[0]);
+        const ctx = contextAround(idx);
 
-    // If multiple prices exist, assume the current price is the lowest (common for sale + original).
-    const min = parsed.reduce((a, b) => (b.value < a.value ? b : a));
-    return min;
+        return { value, currency, idx, ctx };
+      })
+      .filter(Boolean);
+
+    // Filter out bad-context candidates if possible
+    const filtered = parsed.filter((p) => !BAD_CONTEXT.test(p.ctx));
+    const candidates = filtered.length ? filtered : parsed;
+    if (!candidates.length) return null;
+
+    // Detect sale context in the text block we're analyzing
+    const saleContext =
+      /(-\s?\d{1,3}\s?%|\brea\b|\bsale\b|\bord\.?\b|\bwas\b|\bbefore\b|kampanj|nedsatt|sänkt|nu\s*pris)/i.test(str);
+
+    if (saleContext && candidates.length >= 2) {
+      const min = candidates.reduce((a, b) => (b.value < a.value ? b : a));
+      return { value: min.value, currency: min.currency };
+    }
+
+    // Not a sale context: choose earliest plausible candidate (avoid picking random low values elsewhere)
+    const first = candidates.slice().sort((a, b) => a.idx - b.idx)[0];
+    return { value: first.value, currency: first.currency };
   }
 
   function extractPriceFromPage() {
