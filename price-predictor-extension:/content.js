@@ -80,20 +80,43 @@
     return "SEK";
   }
 
+  // NEW: if multiple prices exist in the same text (sale + original), choose the lowest.
   function extractPriceFromText(text) {
-    // Matches: "149,00 kr" "149.00 kr" "79,99 SEK"
-    const match = text.match(/(\d{1,5}(?:[.,]\d{2})?)\s?(kr|sek|€|\$)/i);
-    if (!match) return null;
+    if (!text) return null;
 
-    const value = parseFloat(match[1].replace(",", "."));
-    if (!Number.isFinite(value)) return null;
+    const matches = [...String(text).matchAll(/(\d{1,5}(?:[.,]\d{2})?)\s?(kr|sek|€|\$)/ig)];
+    if (!matches.length) return null;
 
-    return { value, currency: normalizeCurrency(match[2]) };
+    const parsed = matches
+      .map((m) => ({
+        value: parseFloat(String(m[1]).replace(",", ".")),
+        currency: normalizeCurrency(m[2])
+      }))
+      .filter((p) => Number.isFinite(p.value));
+
+    if (!parsed.length) return null;
+
+    // If multiple prices exist, assume the current price is the lowest (common for sale + original).
+    const min = parsed.reduce((a, b) => (b.value < a.value ? b : a));
+    return min;
   }
 
   function extractPriceFromPage() {
     const text = document.body?.innerText || "";
     return extractPriceFromText(text);
+  }
+
+  // NEW: for select-mode, ignore struck-through prices (<del>, <s>, <strike>) when reading element text.
+  function getTextWithoutStruckPrices(element) {
+    try {
+      const clone = element.cloneNode(true);
+      if (clone.querySelectorAll) {
+        clone.querySelectorAll("del, s, strike").forEach((n) => n.remove());
+      }
+      return (clone.innerText || clone.textContent || "").trim();
+    } catch {
+      return (element?.innerText || element?.textContent || "").trim();
+    }
   }
 
   // =========================
@@ -604,8 +627,8 @@
     const t = e.target;
     if (!(t instanceof Element)) return;
 
-    // Try element text first, fallback to body
-    const text = (t.innerText || t.textContent || "").trim();
+    // Try element text first (without struck-through prices), fallback to body
+    const text = getTextWithoutStruckPrices(t);
     let price = extractPriceFromText(text);
     if (!price) price = extractPriceFromPage();
 
