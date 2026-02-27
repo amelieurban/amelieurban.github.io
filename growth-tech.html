@@ -492,22 +492,6 @@
       }
     });
 
-    const leadsLink = document.getElementById('leadsLink');
-    if (leadsLink) {
-      leadsLink.addEventListener('click', function (e) {
-        e.preventDefault();
-        const pw = window.prompt('Password for Growth Tech leads:');
-        if (pw === 'techleads') {
-          const url = leadsLink.getAttribute('data-href');
-          if (window.dataLayer) window.dataLayer.push({ event: 'growthtech_leads_unlock' });
-          window.open(url, '_blank', 'noopener');
-        } else if (pw !== null) {
-          if (window.dataLayer) window.dataLayer.push({ event: 'growthtech_leads_unlock_failed' });
-          window.alert('Wrong password.');
-        }
-      });
-    }
-
   </script>
 
   <script src="data-layer.js"></script>
