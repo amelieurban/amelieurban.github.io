@@ -3,7 +3,7 @@
   // content.js (WIDGET + POPUP HANDLERS)
   // - Widget: floating button + draggable panel
   // - Popup support: PING, TRACK_PRICE_AUTO, SELECT_PRICE_MODE, OPEN_WIDGET
-  // - Storage: PRICE_HISTORY, LAST_PRODUCT_SNAPSHOT
+  // - Storage: PRICE_HISTORY_BY_PRODUCT, LAST_PRODUCT_SNAPSHOT
   // =====================================================
 
   // Prevent running twice on same page
@@ -36,6 +36,40 @@
   }
 
   // =========================
+  // Product identity (per product)
+  // =========================
+  function canonicalUrl(rawUrl = location.href) {
+    const u = new URL(rawUrl);
+
+    // Remove common tracking params so the same product doesn't become "new"
+    [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_content",
+      "utm_term",
+      "gclid",
+      "fbclid",
+      "msclkid",
+      "yclid",
+      "ttclid"
+    ].forEach((p) => u.searchParams.delete(p));
+
+    // NOTE:
+    // Do NOT wipe all query params, because some sites use ?variant=... for product variants.
+    // We only remove tracking params.
+
+    const qs = u.searchParams.toString();
+    return u.origin + u.pathname + (qs ? `?${qs}` : "");
+  }
+
+  function getProductId(url = location.href) {
+    const host = location.hostname.replace(/^www\./, "");
+    const canon = canonicalUrl(url);
+    return `${host}|${canon}`;
+  }
+
+  // =========================
   // PRICE extraction (robust)
   // =========================
   function normalizeCurrency(symbol) {
@@ -62,23 +96,60 @@
     return extractPriceFromText(text);
   }
 
+  // =========================
+  // Storage (per product)
+  // =========================
+  const PRICE_HISTORY_KEY = "PRICE_HISTORY_BY_PRODUCT"; // NEW (per product map)
+  // (Old key you used before was "PRICE_HISTORY" – leaving it alone, but we won't use it anymore.)
+
   async function savePricePoint(price, url = location.href) {
-    const history = (await getLocal("PRICE_HISTORY")) || [];
-    history.push({ value: price.value, currency: price.currency, timestamp: Date.now(), url });
-    await setLocal("PRICE_HISTORY", history);
+    const productId = getProductId(url);
+
+    const all = (await getLocal(PRICE_HISTORY_KEY)) || {};
+    const history = Array.isArray(all[productId]) ? all[productId] : [];
+
+    // avoid spam duplicates within 60s for same value
+    const last = history[history.length - 1];
+    if (last && last.value === price.value && (Date.now() - last.timestamp) < 60_000) {
+      // still update url snapshot but don't push duplicate
+      await setLocal(PRICE_HISTORY_KEY, { ...all, [productId]: history });
+      return;
+    }
+
+    history.push({
+      value: price.value,
+      currency: price.currency,
+      timestamp: Date.now(),
+      url: canonicalUrl(url),
+      productId
+    });
+
+    // keep last 200 points per product
+    all[productId] = history.slice(-200);
+
+    await setLocal(PRICE_HISTORY_KEY, all);
   }
 
   async function buildSummary(currency) {
-    const all = (await getLocal("PRICE_HISTORY")) || [];
-    const history = all.filter(p => p.currency === currency);
+    const productId = getProductId(location.href);
+    const all = (await getLocal(PRICE_HISTORY_KEY)) || {};
+    const historyRaw = Array.isArray(all[productId]) ? all[productId] : [];
+
+    // keep only the same currency (if site switches currency etc.)
+    const history = historyRaw.filter((p) => p && p.currency === currency);
     if (!history.length) return null;
 
-    const values = history.map(p => p.value);
+    const values = history.map((p) => p.value).filter((n) => typeof n === "number" && Number.isFinite(n));
+    if (!values.length) return null;
+
     return {
       current: values[values.length - 1],
       lowest: Math.min(...values),
       highest: Math.max(...values),
-      currency
+      currency,
+      productId,
+      points: values.length,
+      canonical: canonicalUrl(location.href)
     };
   }
 
@@ -134,6 +205,8 @@
     const payload = {
       title,
       url: location.href,
+      canonicalUrl: canonicalUrl(location.href),
+      productId: getProductId(location.href),
       category,
       material: material || "cotton",
       materialDetected: Boolean(material),
@@ -412,7 +485,8 @@
     el.signal.textContent = signal;
     el.vslowest.textContent = change === null ? "—" : `${change}%`;
 
-    el.priceStatus.textContent = "";
+    // optional: show small context in status (won't spam unless open)
+    el.priceStatus.textContent = `Tracked points (this product): ${summary.points}`;
   }
 
   async function renderSnapshot() {
@@ -547,7 +621,7 @@
     }
 
     await savePricePoint(price);
-    await renderPrice(); // update widget if open
+    if (panel.style.display === "block") await renderPrice(); // update widget if open
   }
 
   // =========================
