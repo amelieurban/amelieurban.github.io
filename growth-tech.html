@@ -283,7 +283,7 @@
             <p class="card-desc">View the lead list collected from the Growth Tech download form.</p>
           </div>
           <div class="card-actions">
-            <a class="secondary-btn" href="https://docs.google.com/spreadsheets/d/1u55PV7HBPPQTKcdCyKi_ClkJNeIh0eJNFCdcYgYJuvc/edit?gid=1641492239#gid=1641492239" target="_blank" rel="noopener">Open sheet</a>
+            <a id="leadsLink" class="secondary-btn" href="#" data-href="https://docs.google.com/spreadsheets/d/1u55PV7HBPPQTKcdCyKi_ClkJNeIh0eJNFCdcYgYJuvc/edit?gid=1641492239#gid=1641492239">Open sheet</a>
           </div>
         </div>
       </article>
@@ -336,6 +336,23 @@
         if (window.dataLayer) window.dataLayer.push({ event: 'lead_magnet_click', asset: 'pdf_guide' });
       });
     }
+
+    const leadsLink = document.getElementById('leadsLink');
+    if (leadsLink) {
+      leadsLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        const pw = window.prompt('Password for Growth Tech leads:');
+        if (pw === 'techleads') {
+          const url = leadsLink.getAttribute('data-href');
+          if (window.dataLayer) window.dataLayer.push({ event: 'growthtech_leads_unlock' });
+          window.open(url, '_blank', 'noopener');
+        } else if (pw !== null) {
+          if (window.dataLayer) window.dataLayer.push({ event: 'growthtech_leads_unlock_failed' });
+          window.alert('Wrong password.');
+        }
+      });
+    }
+
   </script>
 
   <script src="data-layer.js"></script>
