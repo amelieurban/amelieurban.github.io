@@ -135,6 +135,70 @@
       align-items:stretch;
     }
 
+
+    .leads-gate{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(243,238,231,0.86);
+      backdrop-filter:blur(6px);
+      z-index:30;
+    }
+    .leads-box{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:32px;
+      width:min(440px, 92vw);
+      box-shadow:0 24px 60px rgba(0,0,0,0.12);
+      text-align:center;
+    }
+    .leads-box h3{
+      font-family:"Playfair Display", "Times New Roman", Times, serif;
+      font-weight:500;
+      font-size:28px;
+      margin:0 0 8px;
+    }
+    .leads-box p{margin:0 0 18px; color:var(--muted)}
+    .leads-box input{
+      width:100%;
+      padding:12px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      font-size:16px;
+      margin-bottom:10px;
+    }
+    .modal-actions{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+    .modal-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 26px;
+      border-radius:999px;
+      font-size:12px;
+      letter-spacing:0.2em;
+      text-transform:uppercase;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+      cursor:pointer;
+      transition:all 0.2s ease;
+    }
+    .modal-btn.primary{
+      background:var(--accent);
+      color:#fff;
+      border-color:var(--accent);
+    }
+    .modal-btn:hover{transform:translateY(-1px)}
+
     .card-actions{
       display:flex;
       flex-direction:column;
@@ -292,6 +356,23 @@
     <a class="back" href="index.html">Back to homepage</a>
   </main>
 
+
+  <div id="leadsGate" class="leads-gate hidden" role="dialog" aria-modal="true" aria-labelledby="leadsTitle">
+    <div class="leads-box">
+      <h3 id="leadsTitle">Growth Tech leads</h3>
+      <p>Enter the password to open the sheet.</p>
+      <form id="leadsForm">
+        <input id="leadsPassword" type="password" autocomplete="off" placeholder="Password" aria-label="Password" />
+        <div id="leadsError" class="gate-error"></div>
+        <div class="modal-actions">
+          <button id="leadsCancel" type="button" class="modal-btn">Cancel</button>
+          <button type="submit" class="modal-btn primary">Open sheet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
   <script>
     const PASSWORD = "growthtech";
     const gate = document.getElementById('gate');
@@ -336,6 +417,65 @@
         if (window.dataLayer) window.dataLayer.push({ event: 'lead_magnet_click', asset: 'pdf_guide' });
       });
     }
+
+
+    const leadsLink = document.getElementById('leadsLink');
+    const leadsGate = document.getElementById('leadsGate');
+    const leadsForm = document.getElementById('leadsForm');
+    const leadsPassword = document.getElementById('leadsPassword');
+    const leadsError = document.getElementById('leadsError');
+    const leadsCancel = document.getElementById('leadsCancel');
+
+    function openLeadsGate() {
+      if (!leadsGate) return;
+      leadsError.textContent = '';
+      leadsPassword.value = '';
+      leadsGate.classList.remove('hidden');
+      setTimeout(() => leadsPassword.focus(), 0);
+    }
+
+    function closeLeadsGate() {
+      if (!leadsGate) return;
+      leadsGate.classList.add('hidden');
+    }
+
+    if (leadsLink) {
+      leadsLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        openLeadsGate();
+      });
+    }
+
+    if (leadsCancel) {
+      leadsCancel.addEventListener('click', closeLeadsGate);
+    }
+
+    if (leadsGate) {
+      leadsGate.addEventListener('click', function (e) {
+        if (e.target === leadsGate) closeLeadsGate();
+      });
+    }
+
+    if (leadsForm) {
+      leadsForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (leadsPassword.value === 'techleads') {
+          const url = leadsLink.getAttribute('data-href');
+          if (window.dataLayer) window.dataLayer.push({ event: 'growthtech_leads_unlock' });
+          closeLeadsGate();
+          window.open(url, '_blank', 'noopener');
+        } else {
+          leadsError.textContent = 'Wrong password.';
+          if (window.dataLayer) window.dataLayer.push({ event: 'growthtech_leads_unlock_failed' });
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && leadsGate && !leadsGate.classList.contains('hidden')) {
+        closeLeadsGate();
+      }
+    });
 
     const leadsLink = document.getElementById('leadsLink');
     if (leadsLink) {
