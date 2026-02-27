@@ -4,6 +4,16 @@
   // - Widget: floating button + draggable panel
   // - Popup support: PING, TRACK_PRICE_AUTO, SELECT_PRICE_MODE, OPEN_WIDGET
   // - Storage: PRICE_HISTORY_BY_PRODUCT, LAST_PRODUCT_SNAPSHOT
+  //
+  // FIXES INCLUDED (so it "works for real"):
+  // 1) Better price extraction:
+  //    - Prefer meta/JSON-LD Product offers
+  //    - Prefer price candidates inside main/product areas
+  //    - Filter out Klarna/monthly, shipping, delivery etc.
+  //    - Only pick "lowest" when sale context is present
+  // 2) Select-mode still ignores struck-through prices
+  // 3) Data is saved per product (already in your code)
+  // 4) (Optional but helpful) keeps a tiny debug string in-memory for current page extraction
   // =====================================================
 
   // Prevent running twice on same page
@@ -58,7 +68,6 @@
     // NOTE:
     // Do NOT wipe all query params, because some sites use ?variant=... for product variants.
     // We only remove tracking params.
-
     const qs = u.searchParams.toString();
     return u.origin + u.pathname + (qs ? `?${qs}` : "");
   }
@@ -80,19 +89,27 @@
     return "SEK";
   }
 
-  /**
-   * Fix:
-   * - Sale pages can include 2 prices (current + original): pick the lowest (only if sale context).
-   * - Pages often include other prices (shipping, Klarna/monthly, etc.): filter those out using nearby text context.
-   * - If NOT sale context: pick the earliest plausible price (not the minimum across the whole page).
-   */
+  // We keep a simple "last extraction source" for debugging (not saved)
+  let __LAST_PRICE_SOURCE__ = "";
+
+  function setLastPriceSource(s) {
+    __LAST_PRICE_SOURCE__ = String(s || "").slice(0, 140);
+  }
+
+  // Context filters for "not product price"
+  const BAD_CONTEXT_RE =
+    /(\/\s*mån|kr\s*\/\s*mån|per\s*month|\/\s*month|\bmån\b|\bmonth\b|klarna|delbetal|installment|finansier|frakt|shipping|delivery|leverans|porto|avgift|fee)/i;
+
+  const SALE_CONTEXT_RE =
+    /(-\s?\d{1,3}\s?%|\brea\b|\bsale\b|\bord\.?\b|\bwas\b|\bbefore\b|kampanj|nedsatt|sänkt|nu\s*pris)/i;
+
   function extractPriceFromText(text) {
     if (!text) return null;
 
     const str = String(text);
 
     // Find all prices
-    const matches = [...str.matchAll(/(\d{1,5}(?:[.,]\d{2})?)\s?(kr|sek|€|\$)/ig)];
+    const matches = [...str.matchAll(/(\d{1,6}(?:[.,]\d{2})?)\s?(kr|sek|€|\$)/ig)];
     if (!matches.length) return null;
 
     function contextAround(index, span = 36) {
@@ -100,11 +117,6 @@
       const end = Math.min(str.length, index + span);
       return str.slice(start, end).toLowerCase();
     }
-
-    // Things that often indicate it's NOT the product's current price
-    // (monthly payment, financing, shipping, etc.)
-    const BAD_CONTEXT =
-      /(\/\s*mån|kr\s*\/\s*mån|per\s*month|\/\s*month|\bmån\b|\bmonth\b|klarna|delbetal|installment|finansier|frakt|shipping|delivery)/i;
 
     const parsed = matches
       .map((m) => {
@@ -119,28 +131,247 @@
       })
       .filter(Boolean);
 
-    // Filter out bad-context candidates if possible
-    const filtered = parsed.filter((p) => !BAD_CONTEXT.test(p.ctx));
+    const filtered = parsed.filter((p) => !BAD_CONTEXT_RE.test(p.ctx));
     const candidates = filtered.length ? filtered : parsed;
     if (!candidates.length) return null;
 
-    // Detect sale context in the text block we're analyzing
-    const saleContext =
-      /(-\s?\d{1,3}\s?%|\brea\b|\bsale\b|\bord\.?\b|\bwas\b|\bbefore\b|kampanj|nedsatt|sänkt|nu\s*pris)/i.test(str);
+    const saleContext = SALE_CONTEXT_RE.test(str);
 
+    // If sale context: choose lowest
     if (saleContext && candidates.length >= 2) {
       const min = candidates.reduce((a, b) => (b.value < a.value ? b : a));
       return { value: min.value, currency: min.currency };
     }
 
-    // Not a sale context: choose earliest plausible candidate (avoid picking random low values elsewhere)
+    // Otherwise choose earliest plausible candidate
     const first = candidates.slice().sort((a, b) => a.idx - b.idx)[0];
     return { value: first.value, currency: first.currency };
   }
 
+  function isVisible(el) {
+    if (!(el instanceof Element)) return false;
+    const style = window.getComputedStyle(el);
+    if (style.display === "none" || style.visibility === "hidden") return false;
+    const rect = el.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0;
+  }
+
+  function textFromNode(el) {
+    if (!el) return "";
+    return (el.innerText || el.textContent || "").trim();
+  }
+
+  function tryExtractFromMetaAndLdJson() {
+    // 1) Meta tags / itemprop price
+    const metaSelectors = [
+      'meta[property="product:price:amount"]',
+      'meta[property="og:price:amount"]',
+      'meta[itemprop="price"]',
+      '[itemprop="price"]'
+    ];
+
+    for (const sel of metaSelectors) {
+      const node = document.querySelector(sel);
+      if (!node) continue;
+
+      // meta content="299.00"
+      if (node.tagName === "META") {
+        const content = node.getAttribute("content") || "";
+        const p = extractPriceFromText(content);
+        if (p) {
+          setLastPriceSource(`meta:${sel}`);
+          return p;
+        }
+      }
+
+      // element text or value/content attributes
+      const t = textFromNode(node);
+      const p1 = extractPriceFromText(t);
+      if (p1) {
+        setLastPriceSource(`itemprop:${sel}`);
+        return p1;
+      }
+      const content = node.getAttribute("content") || node.getAttribute("value") || "";
+      const p2 = extractPriceFromText(content);
+      if (p2) {
+        setLastPriceSource(`attr:${sel}`);
+        return p2;
+      }
+    }
+
+    // 2) JSON-LD Product offers
+    const scripts = [...document.querySelectorAll('script[type="application/ld+json"]')];
+    for (const s of scripts) {
+      try {
+        const json = JSON.parse(s.textContent || "null");
+        const nodes = Array.isArray(json) ? json : [json];
+
+        for (const n of nodes) {
+          // direct Product
+          const offers = n?.offers;
+          const offerArr = Array.isArray(offers) ? offers : offers ? [offers] : [];
+
+          for (const off of offerArr) {
+            const price = off?.price ?? off?.priceSpecification?.price;
+            const currency = off?.priceCurrency;
+            if (price != null) {
+              const p = extractPriceFromText(`${price} ${currency || "SEK"}`);
+              if (p) {
+                setLastPriceSource("jsonld:offers.price");
+                return p;
+              }
+            }
+          }
+
+          // Graph form
+          const graph = n?.["@graph"];
+          if (Array.isArray(graph)) {
+            for (const g of graph) {
+              const offers2 = g?.offers;
+              const offerArr2 = Array.isArray(offers2) ? offers2 : offers2 ? [offers2] : [];
+              for (const off of offerArr2) {
+                const price = off?.price ?? off?.priceSpecification?.price;
+                const currency = off?.priceCurrency;
+                if (price != null) {
+                  const p = extractPriceFromText(`${price} ${currency || "SEK"}`);
+                  if (p) {
+                    setLastPriceSource("jsonld:@graph.offers.price");
+                    return p;
+                  }
+                }
+              }
+            }
+          }
+        }
+      } catch {
+        // ignore broken JSON-LD
+      }
+    }
+
+    return null;
+  }
+
+  function collectPriceCandidates(root = document) {
+    const selectors = [
+      // common testing hooks
+      '[data-testid*="price"]',
+      '[data-test*="price"]',
+      '[data-qa*="price"]',
+
+      // common semantics
+      '[itemprop="price"]',
+      '[aria-label*="price"]',
+      '[aria-label*="pris"]',
+
+      // generic classes/ids
+      '[class*="price"]',
+      '[class*="Price"]',
+      '[id*="price"]',
+      '[id*="Price"]',
+
+      // fallbacks
+      "span",
+      "div"
+    ];
+
+    const nodes = [];
+    for (const sel of selectors) nodes.push(...root.querySelectorAll(sel));
+
+    const uniq = Array.from(new Set(nodes));
+
+    const candidates = [];
+    for (const el of uniq) {
+      if (!isVisible(el)) continue;
+
+      const t = textFromNode(el);
+      if (!t) continue;
+
+      // avoid huge blocks
+      if (t.length > 180) continue;
+
+      // only consider strings that look price-ish
+      if (!/(kr|sek|€|\$)/i.test(t)) continue;
+
+      const p = extractPriceFromText(t);
+      if (!p) continue;
+
+      const lower = t.toLowerCase();
+      let score = 0;
+
+      // bonuses
+      if (/pris|price|rea|sale|ord\.|nu/i.test(lower)) score += 3;
+      if (SALE_CONTEXT_RE.test(lower)) score += 2;
+      if (/(kr|sek|€|\$)/i.test(t)) score += 1;
+
+      // penalties
+      if (BAD_CONTEXT_RE.test(lower)) score -= 8;
+
+      // Prefer stuff in "main/product" areas
+      if (el.closest("main, [role='main'], [data-testid*='product'], [class*='product'], [id*='product']")) score += 2;
+
+      // Avoid header/footer/nav
+      if (el.closest("header, footer, nav")) score -= 2;
+
+      // Avoid tiny UI labels
+      if (t.length < 3) score -= 2;
+
+      candidates.push({ value: p.value, currency: p.currency, score, text: t });
+    }
+
+    return candidates;
+  }
+
+  function pickBestCandidate(cands) {
+    if (!cands.length) return null;
+
+    // Highest score wins; tie-breaker: prefer larger value (avoids choosing e.g. shipping 99kr)
+    cands.sort((a, b) => (b.score - a.score) || (b.value - a.value));
+
+    // extra safety: if best is suspiciously low compared to runner-up and best text looks non-product, pick runner-up
+    const best = cands[0];
+    const second = cands[1];
+    if (second && best.value > 0 && second.value > 0) {
+      const ratio = second.value / best.value;
+      if (ratio >= 2.2 && BAD_CONTEXT_RE.test(best.text.toLowerCase())) {
+        return { value: second.value, currency: second.currency };
+      }
+    }
+
+    return { value: best.value, currency: best.currency };
+  }
+
   function extractPriceFromPage() {
+    // 1) Structured sources (most reliable)
+    const meta = tryExtractFromMetaAndLdJson();
+    if (meta) return meta;
+
+    // 2) Search in likely product container
+    const root =
+      document.querySelector("main") ||
+      document.querySelector('[role="main"]') ||
+      document.querySelector('[data-testid*="product"]') ||
+      document;
+
+    const scoped = collectPriceCandidates(root);
+    const bestScoped = pickBestCandidate(scoped);
+    if (bestScoped) {
+      setLastPriceSource("dom:scoped");
+      return bestScoped;
+    }
+
+    // 3) global dom search
+    const global = collectPriceCandidates(document);
+    const bestGlobal = pickBestCandidate(global);
+    if (bestGlobal) {
+      setLastPriceSource("dom:global");
+      return bestGlobal;
+    }
+
+    // 4) very last resort: body text
     const text = document.body?.innerText || "";
-    return extractPriceFromText(text);
+    const last = extractPriceFromText(text);
+    if (last) setLastPriceSource("body:text");
+    return last;
   }
 
   // NEW: for select-mode, ignore struck-through prices (<del>, <s>, <strike>) when reading element text.
@@ -159,8 +390,7 @@
   // =========================
   // Storage (per product)
   // =========================
-  const PRICE_HISTORY_KEY = "PRICE_HISTORY_BY_PRODUCT"; // NEW (per product map)
-  // (Old key you used before was "PRICE_HISTORY" – leaving it alone, but we won't use it anymore.)
+  const PRICE_HISTORY_KEY = "PRICE_HISTORY_BY_PRODUCT";
 
   async function savePricePoint(price, url = location.href) {
     const productId = getProductId(url);
@@ -171,7 +401,6 @@
     // avoid spam duplicates within 60s for same value
     const last = history[history.length - 1];
     if (last && last.value === price.value && (Date.now() - last.timestamp) < 60_000) {
-      // still update url snapshot but don't push duplicate
       await setLocal(PRICE_HISTORY_KEY, { ...all, [productId]: history });
       return;
     }
@@ -184,9 +413,7 @@
       productId
     });
 
-    // keep last 200 points per product
     all[productId] = history.slice(-200);
-
     await setLocal(PRICE_HISTORY_KEY, all);
   }
 
@@ -195,7 +422,6 @@
     const all = (await getLocal(PRICE_HISTORY_KEY)) || {};
     const historyRaw = Array.isArray(all[productId]) ? all[productId] : [];
 
-    // keep only the same currency (if site switches currency etc.)
     const history = historyRaw.filter((p) => p && p.currency === currency);
     if (!history.length) return null;
 
@@ -250,10 +476,10 @@
 
   const DEFAULT_WEIGHT_KG = {
     tshirt: 0.18,
-    jeans: 0.70,
-    hoodie: 0.60,
+    jeans: 0.7,
+    hoodie: 0.6,
     dress: 0.35,
-    unknown: 0.30
+    unknown: 0.3
   };
 
   async function saveCurrentProductSnapshot() {
@@ -480,10 +706,14 @@
 
   // Drag logic (panel)
   let dragging = false;
-  let startX = 0, startY = 0;
-  let startLeft = 0, startTop = 0;
+  let startX = 0,
+    startY = 0;
+  let startLeft = 0,
+    startTop = 0;
 
-  function px(n) { return `${Math.round(n)}px`; }
+  function px(n) {
+    return `${Math.round(n)}px`;
+  }
 
   el.drag.addEventListener("mousedown", (e) => {
     dragging = true;
@@ -545,7 +775,6 @@
     el.signal.textContent = signal;
     el.vslowest.textContent = change === null ? "—" : `${change}%`;
 
-    // optional: show small context in status (won't spam unless open)
     el.priceStatus.textContent = `Tracked points (this product): ${summary.points}`;
   }
 
@@ -675,33 +904,27 @@
     document.removeEventListener("click", onClickPick, true);
     hideHint();
 
-    if (!price) {
-      // nothing found
-      return;
-    }
+    if (!price) return;
 
     await savePricePoint(price);
-    if (panel.style.display === "block") await renderPrice(); // update widget if open
+    if (panel.style.display === "block") await renderPrice();
   }
 
   // =========================
   // POPUP MESSAGE HANDLERS
   // =========================
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    // 1) Popup handshake
     if (msg?.type === "PING") {
       sendResponse({ ok: true, ready: true });
       return true;
     }
 
-    // 2) Popup -> open widget
     if (msg?.type === "OPEN_WIDGET") {
       openPanel();
       sendResponse({ ok: true });
       return true;
     }
 
-    // 3) Popup -> track price automatically
     if (msg?.type === "TRACK_PRICE_AUTO") {
       (async () => {
         const price = extractPriceFromPage();
@@ -716,7 +939,6 @@
       return true;
     }
 
-    // 4) Popup -> select price mode
     if (msg?.type === "SELECT_PRICE_MODE") {
       selecting = true;
 
